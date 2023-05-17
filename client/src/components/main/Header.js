@@ -43,19 +43,19 @@ const Header = () => {
       <nav className={classes["nav-container"]} ref={menuRef}>
         <Navigation />
       </nav>
-      <div className={classes["btn-container"]}>
-        <button
-          ref={btnRef}
-          onMouseLeave={btnInHoverEffect}
-          onMouseEnter={btnOutHoverEffect}
-          className={classes["cart-button"]}
-          onClick={showCartHandler}
-        >
-          <span>{cartQuantity} in</span>
-          <BsCart className={classes.icon} />
-          <span>Cart</span>
-        </button>
-      </div>
+      {/* <div className={classes["btn-container"]}> */}
+      <button
+        ref={btnRef}
+        onMouseLeave={btnInHoverEffect}
+        onMouseEnter={btnOutHoverEffect}
+        className={classes["cart-button"]}
+        onClick={showCartHandler}
+      >
+        <span>{cartQuantity} in</span>
+        <BsCart className={classes.icon} />
+        <span>Cart</span>
+      </button>
+      {/* </div> */}
     </header>
   );
 };

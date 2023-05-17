@@ -23,6 +23,7 @@ import Dashboard from "./components/body/Dashboard";
 import OrderDetails from "./components/dashboard/OrderDetails";
 import Password from "./components/dashboard/Password";
 import ContactUs from "./components/body/ContactUs";
+import ErrorModal from "./components/UI/ErrorModal";
 
 import { loader as productsLoader } from "./components/body/Platforms";
 import { loader as ordersLoader } from "./components/body/Orders";
@@ -30,7 +31,7 @@ import { loader as orderDetailsLoader } from "./components/dashboard/OrderDetail
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/" element={<UserLayout />}>
+    <Route path="/" element={<UserLayout />} errorElement={<ErrorModal />}>
       <Route index element={<Platforms />} loader={productsLoader} />
       <Route path="/Login" element={<Login />} />
       <Route path="/create-account" element={<Create />} />
