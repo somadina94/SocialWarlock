@@ -31,6 +31,8 @@ const Header = () => {
     menuRef.current.classList.toggle(classes["toggle-nav"]);
   };
 
+  const navClasses = `${classes["nav-container"]} ${classes["toggle-nav"]}`;
+
   return (
     <header className={classes.header}>
       <div className={classes.logo}>
@@ -40,7 +42,7 @@ const Header = () => {
         className={classes["menu-icon"]}
         onClick={toggleMenuHandler}
       />
-      <nav className={classes["nav-container"]} ref={menuRef}>
+      <nav className={navClasses} ref={menuRef}>
         <Navigation />
       </nav>
       {/* <div className={classes["btn-container"]}> */}

@@ -90,3 +90,33 @@
 .done span {
   font-size: 2rem;
 }
+
+@media (max-width: 37.5em) {
+  .wallet {
+    width: 20rem;
+    height: 20rem;
+  }
+
+  .text-address {
+    font-size: 1.4rem;
+  }
+
+  .price {
+    font-size: 2rem;
+  }
+  .instruction {
+    font-size: 1.4rem;
+    text-align: center;
+  }
+
+  .done span {
+    font-size: 1.4rem;
+  }
+}
+
+@media (max-width: 24.375em) {
+  .text-address {
+    font-size: 1rem;
+    padding: 1rem 0.6rem;
+  }
+}
