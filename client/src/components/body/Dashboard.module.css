@@ -1,0 +1,5 @@
+.dashboard {
+  max-width: 120rem;
+  margin: auto;
+  background-color: rgba(0, 0, 0, 0.5);
+}

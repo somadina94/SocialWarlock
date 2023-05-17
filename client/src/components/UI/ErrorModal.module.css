@@ -1,0 +1,22 @@
+.error {
+  max-width: 80rem;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid #26304e;
+  border-radius: 8px;
+  padding: 8rem 4rem;
+  background-color: #868e96;
+}
+
+.error p {
+  font-size: 2rem;
+  color: #fff;
+  background-color: #c92a2a;
+  padding: 2rem;
+  width: 100%;
+  border: 3px solid #26304e;
+  border-radius: 8px;
+  text-align: center;
+}

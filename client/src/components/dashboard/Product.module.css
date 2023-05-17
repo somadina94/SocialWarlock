@@ -1,0 +1,29 @@
+.product {
+  width: 100%;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.detail {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 2rem;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
+}
+
+.detail span {
+  font-size: 1.8rem;
+}
+
+.platform span {
+  font-size: 1.8rem;
+}
+
+.icon {
+  width: 8rem;
+  height: 8rem;
+}

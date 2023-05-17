@@ -1,0 +1,72 @@
+.item {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 4px solid #fff;
+  padding: 0.8rem;
+  color: #ced4da;
+}
+
+.details {
+  display: flex;
+  gap: 3rem;
+  align-items: flex-end;
+}
+
+.actions {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
+
+.namePrice h2 {
+  font-size: 1.8rem;
+  font-weight: 500;
+}
+
+.namePrice {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.namePrice span {
+  font-size: 1.6rem;
+  font-weight: 600;
+}
+
+.quantity {
+  font-size: 1.6rem;
+  font-weight: 600;
+  padding: 0.2rem 1rem;
+  border: 2px solid black;
+  border-radius: 1rem;
+}
+
+.add {
+  font-size: 4rem;
+  padding: 0 1rem;
+  cursor: pointer;
+  background-color: #26304e;
+  color: #087f5b;
+  border-radius: 1rem;
+  border: 2px solid black;
+}
+
+.remove {
+  font-size: 4rem;
+  padding: 0 1.4rem;
+  cursor: pointer;
+  background-color: #26304e;
+  color: #c92a2a;
+  border: 2px solid black;
+  border-radius: 1rem;
+}
+
+@media (max-width: 31.25em) {
+  .namePrice h2 {
+    font-size: 1.2rem;
+  }
+  .namePrice span {
+    font-size: 1.2rem;
+  }
+}

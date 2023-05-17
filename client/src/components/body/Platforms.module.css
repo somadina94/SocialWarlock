@@ -1,0 +1,21 @@
+.platforms {
+  margin: auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  justify-items: center;
+  align-items: center;
+  padding: 3rem;
+  row-gap: 4rem;
+}
+
+@media (max-width: 62.5em) {
+  .platforms {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 43.75em) {
+  .platforms {
+    grid-template-columns: 1fr;
+  }
+}

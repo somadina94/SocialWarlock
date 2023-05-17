@@ -1,0 +1,34 @@
+.footer {
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.8);
+  padding: 2rem;
+  padding-bottom: 0.2rem;
+  display: flex;
+  flex-direction: column;
+  justify-items: flex-end;
+  align-items: center;
+  margin-top: 30rem;
+  position: absolute;
+  width: 100%;
+}
+
+.footer p {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.footer p span {
+  font-size: 1.4rem;
+}
+
+.icon {
+  width: 2rem;
+  height: 2rem;
+}
+
+@media (max-width: 27.5em) {
+  .footer p span {
+    font-size: 1rem;
+  }
+}

@@ -1,0 +1,92 @@
+.pay {
+  max-width: 60rem;
+  margin: auto;
+  border-radius: 8px;
+  position: relative;
+  position: fixed;
+  top: 12rem;
+  right: 0;
+  left: 0;
+  bottom: 2rem;
+  z-index: 20;
+  background-color: rgba(0, 0, 0, 0.8);
+  border: 1px solid #fff;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3rem;
+  padding: 2rem;
+  overflow-y: scroll;
+}
+
+.wallet {
+  margin: auto;
+  width: 30rem;
+  height: 30rem;
+}
+
+.wallet img {
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+}
+
+.text-address {
+  background-color: black;
+  padding: 1rem 2rem;
+  font-size: 2rem;
+  border-radius: 8px;
+}
+
+.price {
+  background-color: black;
+  padding: 1rem 2rem;
+  font-size: 3rem;
+  border-radius: 8px;
+}
+
+.instruction {
+  background-color: black;
+  padding: 1rem 2rem;
+  font-size: 1.4rem;
+  border-radius: 8px;
+}
+
+.pay button {
+  padding: 1rem 2rem;
+  background-color: blue;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+  color: #fff;
+  font-size: 2rem;
+  transition: all 500ms;
+}
+
+.pay button:hover {
+  transform: scale(1.2);
+}
+
+.pay button:disabled {
+  background-color: grey;
+}
+
+.done {
+  background-color: black;
+  padding: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+  border-radius: 8px;
+}
+
+.done input {
+  width: 4rem;
+  height: 4rem;
+}
+
+.done span {
+  font-size: 2rem;
+}

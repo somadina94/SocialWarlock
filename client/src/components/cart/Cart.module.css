@@ -1,0 +1,92 @@
+.cart {
+  position: relative;
+  position: absolute;
+  top: 10vh;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.9);
+  width: 50%;
+  z-index: 99;
+  margin: auto;
+  padding: 2rem 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.7);
+  color: #ced4da;
+}
+
+.total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.total span {
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.actions button {
+  font-size: 2rem;
+  padding: 0.6rem 2rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.7);
+  background-color: blue;
+  color: #fff;
+  transition: all 500ms;
+}
+
+.actions button:hover {
+  transform: scale(1.05);
+  color: #ced4da;
+}
+
+.cart ul {
+  max-height: 50rem;
+}
+
+.warning {
+  background-color: black;
+  padding: 1rem;
+  border-radius: 8px;
+  font-size: 1.4rem;
+  cursor: not-allowed;
+}
+
+.empty {
+  font-size: 2rem;
+  text-align: center;
+}
+
+@media (max-width: 75em) {
+  .cart {
+    width: 70%;
+  }
+}
+
+@media (max-width: 56.25em) {
+  .cart {
+    width: 90%;
+  }
+}
+
+@media (max-width: 31.25em) {
+  .cart {
+    width: 100%;
+  }
+}
+
+@media (max-width: 31.25em) {
+  .actions button {
+    font-size: 1.4rem;
+    padding: 0.6rem 1rem;
+  }
+}
