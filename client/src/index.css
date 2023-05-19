@@ -13,7 +13,7 @@ body {
   font-family: "Encode Sans", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: black;
+  background-color: rgba(0, 0, 0, 0.8);
   color: #fff;
 }
 
@@ -70,4 +70,10 @@ code {
 .accordion-button::after {
   color: #fff;
   background-color: #fff;
+}
+
+@media (max-width: 30em) {
+  .carou {
+    display: none;
+  }
 }
