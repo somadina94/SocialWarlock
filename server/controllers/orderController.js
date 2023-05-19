@@ -168,7 +168,7 @@ exports.approveOrder = catchAsync(async (req, res, next) => {
     return new Promise((resolve, reject) => {
       let counter = 0;
       products.forEach(async (el) => {
-        await Product.findByIdAndUpdate(el._id, { ative: false });
+        await Product.findByIdAndUpdate(el._id, { active: false });
         if (counter === products.length - 1) {
           resolve();
         }

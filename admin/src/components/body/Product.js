@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useCookies } from "react-cookie";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 import classes from "./Product.module.css";
 import Spinner from "../UI/Spinner";
@@ -10,6 +11,7 @@ import { alertActions } from "../../store/alert-slice";
 
 const Product = (props) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [showSpinner, setShowSpinner] = useState(false);
   const { jwt } = useCookies(["jwt"])[0];
   const {
@@ -39,9 +41,12 @@ const Product = (props) => {
 
     if (res.status === "success") {
       dispatch(
-        alertActions.setState({ message: res.message, status: res.status })
+        alertActions.setState({
+          message: "Product deleted successfully.",
+          status: "success",
+        })
       );
-      window.location.reload();
+      navigate("/products", { replace: true });
     } else {
       dispatch(
         alertActions.setState({ message: res.message, status: "error" })
