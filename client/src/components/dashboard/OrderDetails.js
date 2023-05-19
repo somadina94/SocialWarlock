@@ -20,7 +20,9 @@ const OrderDetails = () => {
     second: "2-digit",
   });
 
-  if (order.products.includes(null)) {
+  console.log(order.products);
+
+  if (order.products.length < 1) {
     return (
       <p className={classes.empty}>
         Your product list is empty, please contact customer support with your
@@ -28,6 +30,7 @@ const OrderDetails = () => {
       </p>
     );
   }
+
   return (
     <div className={classes["order-details"]}>
       <div className={classes.details}>

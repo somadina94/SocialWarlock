@@ -42,14 +42,17 @@ exports.createOrder = catchAsync(async (req, res, next) => {
       let counter = 0;
       let purchased = [];
       platforms.forEach(async (el) => {
-        const productsArray = await Product.find({ status: true });
+        const productsArray = await Product.find({
+          status: true,
+          active: true,
+        });
 
         const filteredByName = productsArray.filter(
           (doc) => doc.platform.name === el.name
         );
 
-        const [quantityPurchased] = filteredByName.slice(0, el.quantity);
-        purchased.push(quantityPurchased);
+        const [...quantityPurchased] = filteredByName.slice(0, el.quantity);
+        quantityPurchased.forEach((el) => purchased.push(el));
         const data = {
           user: req.user._id,
           totalPrice,
@@ -165,7 +168,7 @@ exports.approveOrder = catchAsync(async (req, res, next) => {
     return new Promise((resolve, reject) => {
       let counter = 0;
       products.forEach(async (el) => {
-        await Product.findByIdAndUpdate(el._id, { active: false });
+        await Product.findByIdAndUpdate(el._id, { ative: false });
         if (counter === products.length - 1) {
           resolve();
         }
