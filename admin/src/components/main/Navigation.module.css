@@ -1,0 +1,53 @@
+.nav {
+  max-width: 140rem;
+  display: flex;
+  list-style: none;
+  align-items: center;
+}
+
+.nav a {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #fff;
+  text-decoration: none;
+  padding: 3.2rem 4rem;
+  transition: all 500ms;
+}
+
+.nav a:hover {
+  background-color: darkblue;
+}
+
+.active {
+  background: blue;
+}
+
+@media (max-width: 76em) {
+  .nav a {
+    font-size: 1.4rem;
+    padding: 3.2rem 2rem;
+  }
+}
+
+@media (max-width: 50em) {
+  .nav {
+    flex-direction: column;
+    position: absolute;
+    top: 8rem;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    gap: 2rem;
+    padding: 2rem;
+  }
+
+  .nav a {
+    font-size: 1.8rem;
+    padding: 1rem 10rem;
+  }
+
+  .na li {
+    align-self: center;
+    justify-self: center;
+  }
+}

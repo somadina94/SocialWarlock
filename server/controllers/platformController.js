@@ -47,6 +47,7 @@ exports.updatePlatform = catchAsync(async (req, res, next) => {
 
   res.status(200).json({
     status: "success",
+    message: `${platform.name} platform updated successfully.`,
     data: {
       platform,
     },

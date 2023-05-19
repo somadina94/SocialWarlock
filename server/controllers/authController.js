@@ -77,6 +77,15 @@ exports.loginUser = catchAsync(async (req, res, next) => {
     return next(new AppError("Incorrect email or password"));
   }
 
+  if (user.active === false) {
+    return next(
+      new AppError(
+        "Your account has been disabled, contact customer support.",
+        401
+      )
+    );
+  }
+
   // 4) Check if password is correct.
   if (user.role === "admin") {
     return next(new AppError("Wrong url, try admin url", 401));

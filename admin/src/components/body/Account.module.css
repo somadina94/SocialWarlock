@@ -1,0 +1,58 @@
+.account {
+  max-width: 40rem;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
+  border: 1px solid grey;
+}
+
+.info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.info span {
+  font-size: 1.2rem;
+}
+
+.action {
+  display: flex;
+  justify-content: space-between;
+}
+
+.action button {
+  border: none;
+  padding: 1rem 2rem;
+  font-size: 1.4rem;
+  color: #fff;
+  border-radius: 8px;
+  transition: all 500ms;
+}
+
+.block {
+  background-color: red;
+}
+
+.unblock {
+  background-color: green;
+}
+
+.action button:hover {
+  transform: scale(1.1);
+}
+
+@media (max-width: 81.25em) {
+  .account {
+    max-width: 35rem;
+  }
+}
+
+@media (max-width: 71.825em) {
+  .account {
+    max-width: 32rem;
+  }
+}

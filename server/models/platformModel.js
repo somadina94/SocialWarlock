@@ -4,7 +4,14 @@ const platformShema = new mongoose.Schema(
   {
     name: {
       type: String,
-      enum: ["Facebook", "Instagram", "LinkedIn"],
+      enum: [
+        "Facebook",
+        "Instagram",
+        "LinkedIn",
+        "Tik Tok",
+        "Reddit",
+        "Twitter",
+      ],
     },
     price: {
       type: Number,

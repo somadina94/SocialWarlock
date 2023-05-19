@@ -24,6 +24,8 @@ import OrderDetails from "./components/dashboard/OrderDetails";
 import Password from "./components/dashboard/Password";
 import ContactUs from "./components/body/ContactUs";
 import ErrorModal from "./components/UI/ErrorModal";
+import ForgotPassword from "./components/auth/ForgotPassword";
+import ResetPassword from "./components/auth/ResetPassword";
 
 import { loader as productsLoader } from "./components/body/Platforms";
 import { loader as ordersLoader } from "./components/body/Orders";
@@ -37,6 +39,8 @@ const router = createBrowserRouter(
       <Route path="/create-account" element={<Create />} />
       <Route path="/products" element={<Platforms />} loader={productsLoader} />
       <Route path="/contact-us" element={<ContactUs />} />
+      <Route path="/forgotPassword" element={<ForgotPassword />} />
+      <Route path="/resetPassword/:token" element={<ResetPassword />} />
       <Route path="/dashboard" element={<Dashboard />}>
         <Route index element={<UserDetails />} />
         <Route path="/dashboard/account-info" element={<UserDetails />} />

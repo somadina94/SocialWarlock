@@ -1,0 +1,22 @@
+.products {
+  margin: auto;
+  padding: 2rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  justify-items: center;
+  align-items: center;
+  row-gap: 4rem;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+@media (max-width: 100em) {
+  .products {
+    padding: 1rem;
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (max-width: 50em) {
+  .products {
+    grid-template-columns: 1fr;
+  }
+}

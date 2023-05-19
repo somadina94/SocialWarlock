@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 import {
   AiFillFacebook,
   AiFillInstagram,
@@ -20,7 +20,7 @@ const Product = (props) => {
     platform,
   } = props;
 
-  useEffect(() => {
+  useMemo(() => {
     cart.map((el) => {
       if (el.id === platform) {
         setPlatformName(el.name);
@@ -34,7 +34,7 @@ const Product = (props) => {
 
       return "";
     });
-  }, [cart, platform, platformName, icon]);
+  }, [cart, platform]);
 
   return (
     <div className={classes.product}>

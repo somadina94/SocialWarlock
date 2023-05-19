@@ -3,6 +3,11 @@ const validator = require("validator");
 
 const productSchema = new mongoose.Schema(
   {
+    name: String,
+    active: {
+      type: Boolean,
+      default: true,
+    },
     createdAt: {
       type: Date,
       default: Date.now,
@@ -23,7 +28,7 @@ const productSchema = new mongoose.Schema(
     },
     status: {
       type: Boolean,
-      default: true,
+      default: false,
     },
     recoveryEmail: {
       type: String,

@@ -27,6 +27,9 @@ router.patch(
 
 router.use(authController.protect);
 
+router.patch("/block/:id", userController.blockUser);
+router.patch("/unblock/:id", userController.unblockUser);
+
 router
   .route("/:id")
   .patch(userController.updateUser)

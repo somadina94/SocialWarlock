@@ -1,12 +1,12 @@
 import axios from "axios";
 
-// const axiosInstance = axios.create({
-//   baseURL: "http://127.0.0.1:5002/api/v1/",
-// });
-
 const axiosInstance = axios.create({
-  baseURL: "https://api.provbm.com/api/v1/",
+  baseURL: "http://127.0.0.1:5002/api/v1/",
 });
+
+// const axiosInstance = axios.create({
+//   baseURL: "https://api.provbm.com/api/v1/",
+// });
 
 export const createAccount = async (data) => {
   try {
@@ -55,6 +55,32 @@ export const updatePassword = async (jwt, data) => {
       headers: {
         authorization: `Bearer ${jwt}`,
       },
+    });
+    return res.data;
+  } catch (err) {
+    return err.response.data;
+  }
+};
+
+export const forgotPassword = async (data) => {
+  try {
+    const res = await axiosInstance({
+      method: "POST",
+      url: "users/forgotPassword",
+      data,
+    });
+    return res.data;
+  } catch (err) {
+    return err.response.data;
+  }
+};
+
+export const resetPassword = async (data, token) => {
+  try {
+    const res = await axiosInstance({
+      method: "POST",
+      url: `users/resetPassword/${token}`,
+      data,
     });
     return res.data;
   } catch (err) {

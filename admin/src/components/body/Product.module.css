@@ -1,0 +1,66 @@
+.product {
+  position: relative;
+  max-width: 36rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.8);
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+  border: 0.4px solid grey;
+  width: 100%;
+}
+
+.details {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.name span {
+  font-size: 2.4rem;
+}
+
+.details span {
+  font-size: 1.4rem;
+}
+
+.action {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.approve {
+  background-color: green;
+}
+
+.delete {
+  background-color: red;
+}
+
+.action button {
+  font-size: 1.4rem;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  transition: all 500ms;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
+  text-decoration: none;
+  color: #fff;
+}
+
+.action button:hover {
+  transform: scale(1.3);
+  color: #fff;
+}
+
+@media (max-width: 50em) {
+  .details span {
+    font-size: 1.2rem;
+  }
+}

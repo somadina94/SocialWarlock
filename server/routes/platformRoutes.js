@@ -1,12 +1,15 @@
 const express = require("express");
 const platformController = require("../controllers/platformController");
+const authController = require("../controllers/authController");
 
 const router = express.Router();
 
 router
   .route("/")
-  .post(platformController.createPlatform)
+  .post(authController.protect, platformController.createPlatform)
   .get(platformController.getAllPlatforms);
+
+router.use(authController.protect, authController.restrictTo("admin"));
 
 router
   .route("/:id")

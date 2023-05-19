@@ -1,0 +1,22 @@
+.accounts {
+  margin: auto;
+  padding: 2rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  justify-items: center;
+  align-items: center;
+  row-gap: 4rem;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+@media (max-width: 65.625em) {
+  .accounts {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 43.75em) {
+  .accounts {
+    grid-template-columns: 1fr;
+  }
+}

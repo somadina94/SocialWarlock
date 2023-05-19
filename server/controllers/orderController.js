@@ -4,6 +4,7 @@ const Product = require("../models/productModel");
 const AppError = require("../util/appError");
 const catchAsync = require("../util/catchAsync");
 const Email = require("../util/email");
+const updateProduct = require("../controllers/productController").updateProduct;
 
 exports.createOrder = catchAsync(async (req, res, next) => {
   const cart = req.body.cart;
@@ -41,7 +42,7 @@ exports.createOrder = catchAsync(async (req, res, next) => {
       let counter = 0;
       let purchased = [];
       platforms.forEach(async (el) => {
-        const productsArray = await Product.find();
+        const productsArray = await Product.find({ status: true });
 
         const filteredByName = productsArray.filter(
           (doc) => doc.platform.name === el.name
@@ -81,8 +82,20 @@ exports.createOrder = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.getAllOrders = catchAsync(async (req, res, next) => {
-  const orders = await Order.find();
+exports.getAllOrdersUser = catchAsync(async (req, res, next) => {
+  const orders = await Order.find({ user: req.user._id, status: true });
+
+  res.status(200).json({
+    status: "success",
+    count: orders.length,
+    data: {
+      orders,
+    },
+  });
+});
+
+exports.getAllOrdersAdmin = catchAsync(async (req, res, next) => {
+  const orders = await Order.find({ status: false });
 
   res.status(200).json({
     status: "success",
@@ -136,5 +149,41 @@ exports.deleteOder = catchAsync(async (req, res, next) => {
   res.status(204).json({
     status: "success",
     data: null,
+  });
+});
+
+exports.approveOrder = catchAsync(async (req, res, next) => {
+  const order = await Order.findOne({ _id: req.params.id });
+
+  if (!order) {
+    return next(new AppError("Order was not found", 404));
+  }
+
+  const { products } = order;
+
+  const deleteProduct = () => {
+    return new Promise((resolve, reject) => {
+      let counter = 0;
+      products.forEach(async (el) => {
+        await Product.findByIdAndUpdate(el._id, { active: false });
+        if (counter === products.length - 1) {
+          resolve();
+        }
+        counter++;
+      });
+    });
+  };
+
+  await deleteProduct();
+
+  order.status = true;
+  await order.save();
+
+  res.status(200).json({
+    status: "success",
+    message: "Order approved successfully.",
+    data: {
+      order,
+    },
   });
 });

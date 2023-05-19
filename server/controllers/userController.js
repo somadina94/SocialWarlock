@@ -13,7 +13,7 @@ exports.createUser = catchAsync(async (req, res, next) => {
 });
 
 exports.getAllUsers = catchAsync(async (req, res, next) => {
-  const users = await User.find();
+  const users = await User.find({ role: "user" });
 
   if (!users) {
     return next(new AppError("No users were found.", 404));
@@ -65,5 +65,39 @@ exports.deleteUser = catchAsync(async (req, res, next) => {
 
   res.status(204).json({
     status: "success",
+  });
+});
+
+exports.blockUser = catchAsync(async (req, res, next) => {
+  const user = await User.findByIdAndUpdate(
+    req.params.id,
+    { active: false },
+    { new: true }
+  );
+
+  if (!user) {
+    return next(new AppError("No user found with that ID", 404));
+  }
+
+  res.status(200).json({
+    status: "success",
+    message: "User blocked successfully.",
+  });
+});
+
+exports.unblockUser = catchAsync(async (req, res, next) => {
+  const user = await User.findByIdAndUpdate(
+    req.params.id,
+    { active: true },
+    { new: true }
+  );
+
+  if (!user) {
+    return next(new AppError("No user found with that ID", 404));
+  }
+
+  res.status(200).json({
+    status: "success",
+    message: "User unblocked successfully.",
   });
 });

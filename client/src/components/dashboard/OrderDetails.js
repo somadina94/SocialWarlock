@@ -10,19 +10,37 @@ const OrderDetails = () => {
   const res = useLoaderData();
 
   const order = res.data.order;
+
+  const date = new Date(order.createdAt).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  });
+
+  if (order.products.includes(null)) {
+    return (
+      <p className={classes.empty}>
+        Your product list is empty, please contact customer support with your
+        order number.
+      </p>
+    );
+  }
   return (
-    <div className={classes.details}>
+    <div className={classes["order-details"]}>
       <div className={classes.details}>
-        <span></span>
-        <span></span>
+        <span>Total quantity</span>
+        <span>{order.totalQuantity}</span>
       </div>
       <div className={classes.details}>
-        <span></span>
-        <span></span>
+        <span>Total price</span>
+        <span>{order.totalPrice}</span>
       </div>
       <div className={classes.details}>
-        <span></span>
-        <span></span>
+        <span>Date created</span>
+        <span>{date}</span>
       </div>
 
       <div>
