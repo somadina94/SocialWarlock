@@ -21,6 +21,7 @@ import OrderDetails from "./components/orders/OrderDetails";
 import CreateProduct from "./components/actions/CreateProduct";
 import Products from "./components/body/Products";
 import CreatePlatform from "./components/actions/CreatePlatform";
+import CarouselMobile from "./components/UI/CarouselMobile";
 
 import { loader as usersLoader } from "./components/body/Accounts";
 import { loader as platformsLoader } from "./components/body/Platforms";
@@ -71,6 +72,7 @@ function App() {
         {(state) => <AlertModal />}
       </Transition>
       <Carousels />
+      <CarouselMobile />
       <RouterProvider router={router} />
     </Fragment>
   );

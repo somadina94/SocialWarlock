@@ -44,6 +44,10 @@ code {
   height: 100%;
 }
 
+.carou-mobile {
+  display: none;
+}
+
 .c-item {
   transition: all 2s;
 }
@@ -78,8 +82,12 @@ code {
   background-color: #fff;
 }
 
-@media (max-width: 30em) {
-  .carou {
+@media (max-width: 35em) {
+  .carou-desktop {
     display: none;
+  }
+
+  .carou-mobile {
+    display: block;
   }
 }

@@ -26,6 +26,7 @@ import ContactUs from "./components/body/ContactUs";
 import ErrorModal from "./components/UI/ErrorModal";
 import ForgotPassword from "./components/auth/ForgotPassword";
 import ResetPassword from "./components/auth/ResetPassword";
+import CarouselMobile from "./components/UI/CarouselMobile";
 
 import { loader as productsLoader } from "./components/body/Platforms";
 import { loader as ordersLoader } from "./components/body/Orders";
@@ -77,6 +78,7 @@ function App() {
         {(state) => <Payment />}
       </Transition>
       <Carousels />
+      <CarouselMobile />
       <TawkMessengerReact
         propertyId="643012464247f20fefea5d26"
         widgetId="1gtdseqgd"

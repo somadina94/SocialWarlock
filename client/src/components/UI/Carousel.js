@@ -20,7 +20,7 @@ function Carousels() {
     <Carousel
       activeIndex={index}
       onSelect={handleSelect}
-      className="carou mb-5"
+      className="carou carou-desktop mb-5"
       controls={false}
       indicators={false}
     >

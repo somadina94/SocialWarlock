@@ -62,9 +62,12 @@ const Product = (props) => {
 
     if (!res) {
       dispatch(
-        alertActions.setState({ message: res.message, status: res.status })
+        alertActions.setState({
+          message: "Product deleted successfully.",
+          status: "success",
+        })
       );
-      window.location.reload();
+      navigate("/products", { replace: true });
     } else {
       dispatch(
         alertActions.setState({ message: res.message, status: "error" })
