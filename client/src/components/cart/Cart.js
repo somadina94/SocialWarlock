@@ -1,21 +1,29 @@
 import { Fragment, useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { useCookies } from "react-cookie";
+// import { useNavigate } from "react-router-dom";
 
 import classes from "./Cart.module.css";
 import styles from "../UI/General.module.css";
 import Backdrop from "../UI/Backdrop";
 import { cartActions } from "../../store/cart-slice";
 import CartItems from "./CartItems";
+import { createCheckout } from "../../api/api";
+import Spinner from "../UI/Spinner";
+import { alertActions } from "../../store/alert-slice";
 
 const CartModal = () => {
   const dispatch = useDispatch();
+  const [showSpinner, setShowSpinner] = useState(false);
   const cart = useSelector((state) => state.cart.cart);
   const [showOrderBtn, setShowOrderBtn] = useState(false);
   const totalPrice = useSelector((state) => state.cart.totalPrice);
-  // const totalQuantity = useSelector((state) => state.cart.totalQuantity);
+  const totalQuantity = useSelector((state) => state.cart.totalQuantity);
   const cartVisibility = useSelector((state) => state.cart.cartVisibility);
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  const { jwt } = useCookies(["jwt"])[0];
+  // const navigate = useNavigate();
 
   const totalAmount = `$${totalPrice.toFixed(2)}`;
   const cartContentLength = cart.length;
@@ -30,19 +38,27 @@ const CartModal = () => {
     dispatch(cartActions.hideCart());
   };
 
-  const proceedHandler = () => {
-    dispatch(cartActions.hideCart());
-    dispatch(cartActions.displayPay());
-  };
+  const proceedHandler = async () => {
+    setShowSpinner(true);
+    const data = {
+      totalPrice,
+      totalQuantity,
+      cart,
+    };
+    const res = await createCheckout(jwt, data);
 
-  // const orderCartHandler = async () => {
-  //   dispatch(spinnerActions.showSpinner());
-  //   const cartData = {
-  //     totalPrice,
-  //     products: cart,
-  //     totalQuantity,
-  //   };
-  // };
+    if (res.status === "success") {
+      const url = res.data.charge.hosted_url;
+      window.location.href = url;
+    } else {
+      dispatch(
+        alertActions.setState({ message: res.message, status: "error" })
+      );
+    }
+
+    dispatch(cartActions.clearCart());
+    dispatch(cartActions.hideCart());
+  };
 
   const cartClasses = cartVisibility
     ? `${classes.cart} ${styles.add}`
@@ -55,6 +71,7 @@ const CartModal = () => {
           Your cart is empty. Please go ahead and add items to cart.
         </p>
       )}
+      {showSpinner && <Spinner />}
       <ul>
         {cart.map((prod) => (
           <CartItems

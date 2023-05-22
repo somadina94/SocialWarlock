@@ -1,6 +1,7 @@
 const Order = require("../models/orderModel");
 const Product = require("../models/productModel");
 const AppError = require("../util/appError");
+const Platfrom = require("../models/platformModel");
 const catchAsync = require("../util/catchAsync");
 const Email = require("../util/email");
 const coinbase = require("coinbase-commerce-node");
@@ -12,7 +13,35 @@ const resources = coinbase.resources;
 const webhook = coinbase.Webhook;
 
 exports.checkout = catchAsync(async (req, res, next) => {
-  const { totalPrice, totalQuantity } = req.body;
+  const { cart, totalQuantity } = req.body;
+
+  const platforms = cart.map((el) => {
+    const data = {
+      id: el.id,
+      quantity: el.quantity,
+      name: el.name,
+    };
+
+    return data;
+  });
+
+  let totalPrice = 0;
+  const checkPrice = () => {
+    return new Promise((resolve, reject) => {
+      let counter = 0;
+      platforms.forEach(async (el) => {
+        const response = await Platfrom.findById(el.id);
+        const price = response.price * el.quantity;
+        totalPrice += price;
+        if (counter === platforms.length - 1) {
+          resolve();
+        }
+        counter++;
+      });
+    });
+  };
+
+  await checkPrice();
 
   const charge = await resources.Charge.create({
     name: "Test Charge",
@@ -25,31 +54,117 @@ exports.checkout = catchAsync(async (req, res, next) => {
     metadata: {
       totalPrice,
       totalQuantity,
+      cart,
+      user: req.user._id,
     },
   });
 
   res.status(200).json({
     status: "success",
-    charge,
+    data: {
+      charge,
+    },
   });
 });
 
 exports.webhookResponse = catchAsync(async (req, res, next) => {
-  console.log("calling");
   const event = webhook.verifyEventBody(
     req.rawBody,
     req.headers["x-cc-webhook-signature"],
     process.env.COINBASE_WEBHOOK_SECRET
   );
-  console.log(event.data);
 
   if (event.type === "charge:confirmed") {
-    let amount = event.data.pricing.local.amount;
-    let currency = event.data.pricing.local.currency;
     let metaData = event.data.metadata;
+    const { cart } = metaData;
 
-    console.log(amount, currency, metaData);
+    const platforms = cart.map((el) => {
+      const data = {
+        id: el.id,
+        quantity: el.quantity,
+        name: el.name,
+      };
+
+      return data;
+    });
+
+    let totalPrice = 0;
+    const checkPrice = () => {
+      return new Promise((resolve, reject) => {
+        let counter = 0;
+        platforms.forEach(async (el) => {
+          const response = await Platfrom.findById(el.id);
+          const price = response.price * el.quantity;
+          totalPrice += price;
+          if (counter === platforms.length - 1) {
+            resolve();
+          }
+          counter++;
+        });
+      });
+    };
+
+    await checkPrice();
+
+    const makeOrder = () => {
+      return new Promise((resolve, reject) => {
+        let counter = 0;
+        let purchased = [];
+        platforms.forEach(async (el) => {
+          const productsArray = await Product.find({
+            status: true,
+            active: true,
+          });
+
+          const filteredByName = productsArray.filter(
+            (doc) => doc.platform.name === el.name
+          );
+
+          const [...quantityPurchased] = filteredByName.slice(0, el.quantity);
+          quantityPurchased.forEach((el) => purchased.push(el));
+          const data = {
+            user: req.user._id,
+            totalPrice,
+            cart,
+            totalQuantity: req.body.totalQuantity,
+            products: purchased,
+          };
+          if (counter === platforms.length - 1) {
+            const order = await Order.create(data);
+
+            const { products } = order;
+
+            const deleteProduct = () => {
+              return new Promise((resolve, reject) => {
+                let counter = 0;
+                products.forEach(async (el) => {
+                  await Product.findByIdAndUpdate(el._id, { active: false });
+                  if (counter === products.length - 1) {
+                    resolve();
+                  }
+                  counter++;
+                });
+              });
+            };
+
+            await deleteProduct();
+
+            resolve();
+          }
+          counter++;
+        });
+      });
+    };
+
+    await makeOrder();
+
+    const adminEmail = {
+      email: process.env.ADMIN_EMAIL,
+      name: "Admin Social Warlock",
+    };
+
+    await new Email(adminEmail).sendNewOrder();
   }
 
-  //   res.status(200);
+  res.status(200);
 });

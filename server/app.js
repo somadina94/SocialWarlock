@@ -26,7 +26,13 @@ const limiter = rateLimit({
 });
 app.use("/api", limiter);
 
-app.use(express.json());
+app.use(
+  express.json({
+    verify: (req, res, buf) => {
+      req.rawBody = buf;
+    },
+  })
+);
 
 app.use(
   "/webhook",

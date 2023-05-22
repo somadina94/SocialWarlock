@@ -4,8 +4,6 @@ const authController = require("../controllers/authController");
 
 const router = express.Router();
 
-router.post("/checkout", paymentController.checkout);
-
-router.post("/webhook", paymentController.webhookResponse);
+router.post("/checkout", authController.protect, paymentController.checkout);
 
 module.exports = router;

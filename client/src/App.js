@@ -15,7 +15,7 @@ import Login from "./components/auth/Login";
 import Create from "./components/auth/Create";
 import Platforms from "./components/body/Platforms";
 import Cart from "./components/cart/Cart";
-import Payment from "./components/auth/Payment";
+// import Payment from "./components/auth/Payment";
 import UserDetails from "./components/body/UserDetails";
 import Carousels from "./components/UI/Carousel";
 import Orders from "./components/body/Orders";
@@ -65,7 +65,7 @@ function App() {
   const showModal = useSelector((state) => state.alert.showModal);
   // const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   const cartVisibility = useSelector((state) => state.cart.cartVisibility);
-  const showPayment = useSelector((state) => state.cart.showPayment);
+  // const showPayment = useSelector((state) => state.cart.showPayment);
   const tawkMessengerRef = useRef();
 
   return (
@@ -74,9 +74,9 @@ function App() {
       <Transition mountOnEnter unmountOnExit in={cartVisibility} timeout={1000}>
         {(state) => <Cart />}
       </Transition>
-      <Transition mountOnEnter unmountOnExit in={showPayment} timeout={1000}>
+      {/* <Transition mountOnEnter unmountOnExit in={showPayment} timeout={1000}>
         {(state) => <Payment />}
-      </Transition>
+      </Transition> */}
       <Carousels />
       <CarouselMobile />
       <TawkMessengerReact
