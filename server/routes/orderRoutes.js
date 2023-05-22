@@ -11,7 +11,7 @@ router
   .get(orderController.getAllOrdersUser)
   .post(orderController.createOrder);
 
-router.get("/admin", orderController.getAllOrdersAdmin);
+router.get("/admin", authController.restrictTo("admin"), orderController.getAllOrdersAdmin);
 
 router
   .route("/:id")

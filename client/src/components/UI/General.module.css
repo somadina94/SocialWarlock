@@ -13,9 +13,9 @@
 .whatsapp-icon {
   width: 6rem;
   height: 6rem;
+  border-radius: 100%;
   background-color: green;
   color: #fff;
-  border-radius: 100%;
 }
 
 .add {

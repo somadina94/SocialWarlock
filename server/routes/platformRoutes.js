@@ -6,7 +6,11 @@ const router = express.Router();
 
 router
   .route("/")
-  .post(authController.protect, platformController.createPlatform)
+  .post(
+    authController.protect,
+    authController.restrictTo("admin"),
+    platformController.createPlatform
+  )
   .get(platformController.getAllPlatforms);
 
 router.use(authController.protect, authController.restrictTo("admin"));

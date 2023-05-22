@@ -6,7 +6,11 @@ const router = express.Router();
 
 router
   .route("/")
-  .post(userController.createUser)
+  .post(
+    authController.protect,
+    authController.restrictTo("admin"),
+    userController.createUser
+  )
   .get(
     authController.protect,
     authController.restrictTo("admin"),
@@ -27,8 +31,16 @@ router.patch(
 
 router.use(authController.protect);
 
-router.patch("/block/:id", userController.blockUser);
-router.patch("/unblock/:id", userController.unblockUser);
+router.patch(
+  "/block/:id",
+  authController.restrictTo("admin"),
+  userController.blockUser
+);
+router.patch(
+  "/unblock/:id",
+  authController.restrictTo("admin"),
+  userController.unblockUser
+);
 
 router
   .route("/:id")
