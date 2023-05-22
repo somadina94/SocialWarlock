@@ -13,6 +13,7 @@ const mongoSanitize = require("express-mongo-sanitize");
 const xss = require("xss-clean");
 const hpp = require("hpp");
 const rateLimit = require("express-rate-limit");
+const paymentController = require("./controllers/paymentController");
 
 const app = express();
 
@@ -25,16 +26,22 @@ const limiter = rateLimit({
 });
 app.use("/api", limiter);
 
+app.use(express.json());
+
 app.use(
-  express.json({
-    verify: (req, res, buf) => {
-      const url = req.originalUrl;
-      if (url.startsWith("api/v1/payment/webhook")) {
-        req.rawBody = buf.toString();
-      }
-    },
-  })
+  "/webhook",
+  express.raw({ type: "application/json" }),
+  paymentController.webhookResponse
 );
+
+// {
+//   verify: (req, res, buf) => {
+//     const url = req.originalUrl;
+//     if (url.startsWith("api/v1/payment/webhook")) {
+//       req.rawBody = buf.toString();
+//     }
+//   },
+// }
 
 app.use(cors());
 
