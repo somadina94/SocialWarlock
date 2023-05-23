@@ -74,9 +74,9 @@ exports.webhookResponse = catchAsync(async (req, res, next) => {
     process.env.COINBASE_WEBHOOK_SECRET
   );
 
-  if (event.type === "charge:confirmed") {
+  if (event.type === "charge:resolved") {
     let metaData = event.data.metadata;
-    const { cart } = metaData;
+    const { cart, totalQuantity, user } = metaData;
 
     const platforms = cart.map((el) => {
       const data = {
@@ -123,10 +123,10 @@ exports.webhookResponse = catchAsync(async (req, res, next) => {
           const [...quantityPurchased] = filteredByName.slice(0, el.quantity);
           quantityPurchased.forEach((el) => purchased.push(el));
           const data = {
-            user: req.user._id,
+            user,
             totalPrice,
             cart,
-            totalQuantity: req.body.totalQuantity,
+            totalQuantity,
             products: purchased,
           };
           if (counter === platforms.length - 1) {
