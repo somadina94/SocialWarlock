@@ -74,7 +74,7 @@ exports.webhookResponse = catchAsync(async (req, res, next) => {
     process.env.COINBASE_WEBHOOK_SECRET
   );
 
-  if (event.type === "charge:resolved") {
+  if (event.type === "charge:confirmed") {
     let metaData = event.data.metadata;
     const { cart, totalQuantity, user } = metaData;
 
