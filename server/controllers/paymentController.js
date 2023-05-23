@@ -76,7 +76,8 @@ exports.webhookResponse = catchAsync(async (req, res, next) => {
 
   if (event.type === "charge:confirmed") {
     const metaData = event.data.metadata;
-    const cart = metaData.cart;
+    console.log(metaData);
+    const cart = [...metaData.cart];
     const totalQuantity = metaData.totalQuantity;
     const user = metaData.user;
 
@@ -89,13 +90,14 @@ exports.webhookResponse = catchAsync(async (req, res, next) => {
 
       return data;
     });
-
+    console.log(platforms);
     let totalPrice = 0;
     const checkPrice = () => {
       return new Promise((resolve, reject) => {
         let counter = 0;
         platforms.forEach(async (el) => {
           const response = await Platfrom.findById(el.id);
+          console.log(response);
           const price = response.price * el.quantity;
           totalPrice += price;
           if (counter === platforms.length - 1) {
@@ -168,5 +170,5 @@ exports.webhookResponse = catchAsync(async (req, res, next) => {
     await new Email(adminEmail).sendNewOrder();
   }
 
-  res.sendStatus(200);
+  // res.sendStatus(200);
 });
