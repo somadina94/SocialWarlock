@@ -75,8 +75,10 @@ exports.webhookResponse = catchAsync(async (req, res, next) => {
   );
 
   if (event.type === "charge:confirmed") {
-    let metaData = event.data.metadata;
-    const { cart, totalQuantity, user } = metaData;
+    const metaData = event.data.metadata;
+    const cart = metaData.cart;
+    const totalQuantity = metaData.totalQuantity;
+    const user = metaData.user;
 
     const platforms = cart.map((el) => {
       const data = {
