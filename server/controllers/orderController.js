@@ -177,8 +177,6 @@ exports.approveOrder = catchAsync(async (req, res, next) => {
     });
   };
 
-  await deleteProduct();
-
   order.status = true;
   await order.save();
 

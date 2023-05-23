@@ -151,6 +151,9 @@ exports.webhookResponse = async (req, res, next) => {
 
             await deleteProduct();
 
+            order.status = true;
+            await order.save({ validateBeforeSave: false });
+
             resolve();
           }
           counter++;
