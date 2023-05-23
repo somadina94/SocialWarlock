@@ -44,8 +44,8 @@ exports.checkout = catchAsync(async (req, res, next) => {
   await checkPrice();
 
   const charge = await resources.Charge.create({
-    name: "Test Charge",
-    description: "Test Charge Description",
+    name: "Order checkout",
+    description: "Social account purchase Charge",
     local_price: {
       amount: totalPrice,
       currency: "USD",

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useCookies } from "react-cookie";
+import { useNavigate } from "react-router-dom";
 
 import classes from "./Account.module.css";
 import { blockUser, unblockUser } from "../../api/api";
@@ -12,6 +13,7 @@ const Account = (props) => {
   const { name, email, createdAt, active, id } = props;
   const dispatch = useDispatch();
   const { jwt } = useCookies(["jwt"])[0];
+  const navigate = useNavigate();
 
   const date = new Date(createdAt).toLocaleDateString("en-US", {
     year: "numeric",
@@ -31,13 +33,13 @@ const Account = (props) => {
       dispatch(
         alertActions.setState({ message: res.message, status: res.status })
       );
+      navigate("/accounts", { replace: true });
     } else {
       dispatch(
         alertActions.setState({ message: res.message, status: "error" })
       );
     }
     setShowSpinner(false);
-    window.location.reload();
   };
   const unblockUserHandler = async () => {
     setShowSpinner(true);

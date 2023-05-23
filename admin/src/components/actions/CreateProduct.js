@@ -5,6 +5,7 @@ import { useCookies } from "react-cookie";
 import Cookies from "universal-cookie";
 import { useLoaderData } from "react-router-dom";
 import { FcAddressBook, FcKey } from "react-icons/fc";
+import { useNavigate } from "react-router-dom";
 
 import classes from "./UpdatePlatform.module.css";
 import { alertActions } from "../../store/alert-slice";
@@ -19,6 +20,7 @@ const CreateProduct = () => {
   const res = useLoaderData();
   const platform = res.data.platform;
   const { name, _id: id } = platform;
+  const navigate = useNavigate();
 
   const {
     value: usernameInput,
@@ -86,6 +88,7 @@ const CreateProduct = () => {
       dispatch(
         alertActions.setState({ message: res.message, status: res.status })
       );
+      navigate("/platforms", { replace: true });
     } else {
       dispatch(
         alertActions.setState({ message: res.message, status: "error" })

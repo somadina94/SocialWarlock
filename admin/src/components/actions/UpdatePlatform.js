@@ -5,6 +5,7 @@ import { useCookies } from "react-cookie";
 import Cookies from "universal-cookie";
 import { useLoaderData } from "react-router-dom";
 import { FcCurrencyExchange, FcGlobe, FcChargeBattery } from "react-icons/fc";
+import { useNavigate } from "react-router-dom";
 
 import classes from "./UpdatePlatform.module.css";
 import { alertActions } from "../../store/alert-slice";
@@ -20,6 +21,7 @@ const UpdatePlatform = () => {
   const { jwt } = useCookies(["jwt"])[0];
   const dispatch = useDispatch();
   const res = useLoaderData();
+  const navigate = useNavigate();
   const platform = res.data.platform;
   const { name, price } = platform;
   const status = platform.status === true ? "true" : "false";
@@ -66,6 +68,7 @@ const UpdatePlatform = () => {
       dispatch(
         alertActions.setState({ message: res.message, status: res.status })
       );
+      navigate("/platforms", { replace: true });
     } else {
       dispatch(
         alertActions.setState({ message: res.message, status: "error" })
