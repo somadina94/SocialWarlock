@@ -32,6 +32,7 @@ const UpdatePlatform = () => {
   } = useInput((value) => value.trim() !== "");
 
   const {
+    value: priceInput,
     enteredValueIsValid: priceInputIsValid,
     hasError: priceInputIsInvalid,
     valueInputChangedHandler: priceInputChangedHandler,
@@ -58,7 +59,7 @@ const UpdatePlatform = () => {
 
     const data = {
       name: nameRef.current.value,
-      price: priceRef.current.value,
+      price: priceInput,
       status: statusRef.current.value,
     };
 
@@ -113,8 +114,9 @@ const UpdatePlatform = () => {
           <FcCurrencyExchange className={classes.icon} />
           <input
             type="text"
+            placeholder={price}
             ref={priceRef}
-            value={price}
+            value={priceInput}
             onChange={priceInputChangedHandler}
             onBlur={priceInputBlurHandler}
           />
