@@ -14,6 +14,7 @@ const xss = require("xss-clean");
 const hpp = require("hpp");
 const rateLimit = require("express-rate-limit");
 const paymentController = require("./controllers/paymentController");
+const bodyParser = require("body-parser");
 
 const app = express();
 
@@ -34,20 +35,14 @@ app.use(
   })
 );
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
 app.use(
   "/webhook",
   express.raw({ type: "application/json" }),
   paymentController.webhookResponse
 );
-
-// {
-//   verify: (req, res, buf) => {
-//     const url = req.originalUrl;
-//     if (url.startsWith("api/v1/payment/webhook")) {
-//       req.rawBody = buf.toString();
-//     }
-//   },
-// }
 
 app.use(cors());
 
