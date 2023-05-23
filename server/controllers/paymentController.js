@@ -67,7 +67,7 @@ exports.checkout = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.webhookResponse = catchAsync(async (req, res, next) => {
+exports.webhookResponse = async (req, res, next) => {
   const event = webhook.verifyEventBody(
     req.rawBody,
     req.headers["x-cc-webhook-signature"],
@@ -80,6 +80,7 @@ exports.webhookResponse = catchAsync(async (req, res, next) => {
     const cart = [...metaData.cart];
     const totalQuantity = metaData.totalQuantity;
     const user = metaData.user;
+    console.log(cart);
 
     const platforms = cart.map((el) => {
       const data = {
@@ -171,4 +172,4 @@ exports.webhookResponse = catchAsync(async (req, res, next) => {
   }
 
   // res.sendStatus(200);
-});
+};
