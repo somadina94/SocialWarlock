@@ -166,5 +166,5 @@ exports.webhookResponse = catchAsync(async (req, res, next) => {
     await new Email(adminEmail).sendNewOrder();
   }
 
-  res.status(200);
+  res.sendStatus(200);
 });
