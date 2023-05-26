@@ -1,0 +1,30 @@
+.payment {
+  max-width: 50rem;
+  width: 100%;
+}
+
+.payment h2 {
+  font-size: 3rem;
+}
+
+.payment-method {
+  padding: 2rem 2rem;
+  margin-bottom: 12rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  max-width: 50rem;
+  width: 100%;
+}
+
+.method {
+  width: 14rem;
+  height: 6rem;
+}
+
+.method img {
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+}

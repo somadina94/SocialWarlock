@@ -5,6 +5,7 @@ import {
   createRoutesFromElements,
   Route,
   RouterProvider,
+  Navigate,
 } from "react-router-dom";
 import { Transition } from "react-transition-group";
 import TawkMessengerReact from "@tawk.to/tawk-messenger-react";
@@ -15,7 +16,6 @@ import Login from "./components/auth/Login";
 import Create from "./components/auth/Create";
 import Platforms from "./components/body/Platforms";
 import Cart from "./components/cart/Cart";
-// import Payment from "./components/auth/Payment";
 import UserDetails from "./components/body/UserDetails";
 import Carousels from "./components/UI/Carousel";
 import Orders from "./components/body/Orders";
@@ -57,15 +57,14 @@ const router = createBrowserRouter(
         />
         <Route path="updatePassword" element={<Password />} />
       </Route>
+      <Route path="*" element={<Navigate to="/" />} />
     </Route>
   )
 );
 
 function App() {
   const showModal = useSelector((state) => state.alert.showModal);
-  // const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   const cartVisibility = useSelector((state) => state.cart.cartVisibility);
-  // const showPayment = useSelector((state) => state.cart.showPayment);
   const tawkMessengerRef = useRef();
 
   return (
@@ -74,14 +73,11 @@ function App() {
       <Transition mountOnEnter unmountOnExit in={cartVisibility} timeout={1000}>
         {(state) => <Cart />}
       </Transition>
-      {/* <Transition mountOnEnter unmountOnExit in={showPayment} timeout={1000}>
-        {(state) => <Payment />}
-      </Transition> */}
       <Carousels />
       <CarouselMobile />
       <TawkMessengerReact
-        propertyId="643012464247f20fefea5d26"
-        widgetId="1gtdseqgd"
+        propertyId="64704413ad80445890ef3152"
+        widgetId="default"
         ref={tawkMessengerRef}
       />
       <RouterProvider router={router} />
