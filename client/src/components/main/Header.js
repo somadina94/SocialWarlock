@@ -9,22 +9,12 @@ import Navigation from "./Navigation";
 import { cartActions } from "../../store/cart-slice";
 
 const Header = () => {
-  const btnRef = useRef();
   const menuRef = useRef();
   const dispatch = useDispatch();
   const cartQuantity = useSelector((state) => state.cart.totalQuantity);
 
   const showCartHandler = () => {
     dispatch(cartActions.showCart());
-  };
-
-  const btnOutHoverEffect = () => {
-    btnRef.current.classList.add(classes["hover-out"]);
-    btnRef.current.classList.remove(classes["hover-in"]);
-  };
-  const btnInHoverEffect = () => {
-    btnRef.current.classList.add(classes["hover-in"]);
-    btnRef.current.classList.remove(classes["hover-out"]);
   };
 
   const toggleMenuHandler = () => {
@@ -45,11 +35,8 @@ const Header = () => {
       <nav className={navClasses} ref={menuRef}>
         <Navigation />
       </nav>
-      {/* <div className={classes["btn-container"]}> */}
+      
       <button
-        ref={btnRef}
-        onMouseLeave={btnInHoverEffect}
-        onMouseEnter={btnOutHoverEffect}
         className={classes["cart-button"]}
         onClick={showCartHandler}
       >
@@ -57,7 +44,6 @@ const Header = () => {
         <BsCart className={classes.icon} />
         <span>Cart</span>
       </button>
-      {/* </div> */}
     </header>
   );
 };

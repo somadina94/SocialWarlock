@@ -54,7 +54,7 @@ const Platform = (props) => {
         </span>
       </div>
       <div className={classes["cart-action"]}>
-        <button onClick={addProdToCartHandler} disabled={!status}>
+        <button onClick={addProdToCartHandler} disabled={!status}> <p>Add to Cart</p>
           <BsFillCartPlusFill className={classes.add} />
         </button>
       </div>
