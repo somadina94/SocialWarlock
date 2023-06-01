@@ -1,26 +1,23 @@
-const express = require("express");
-const orderController = require("../controllers/orderController");
-const authController = require("../controllers/authController");
+const express = require('express');
+const orderController = require('../controllers/orderController');
+const authController = require('../controllers/authController');
 
 const router = express.Router();
 
 router.use(authController.protect);
 
-router
-  .route("/")
-  .get(orderController.getAllOrdersUser)
-  .post(orderController.createOrder);
+router.route('/').get(orderController.getAllOrdersUser).post(orderController.createOrder);
 
-router.get("/admin", authController.restrictTo("admin"), orderController.getAllOrdersAdmin);
+router.get('/admin', authController.restrictTo('admin'), orderController.getAllOrdersAdmin);
 
 router
-  .route("/:id")
+  .route('/:id')
   .get(orderController.getOneOrder)
-  .patch(authController.restrictTo("admin"), orderController.updateOder)
-  .delete(authController.restrictTo("admin"), orderController.deleteOder);
+  .patch(authController.restrictTo('admin'), orderController.updateOder)
+  .delete(authController.restrictTo('admin'), orderController.deleteOder);
 
-router.use(authController.restrictTo("admin"));
+router.use(authController.restrictTo('admin'));
 
-router.patch("/approveOrder/:id", orderController.approveOrder);
+router.patch('/approveOrder/:id', orderController.approveOrder);
 
 module.exports = router;

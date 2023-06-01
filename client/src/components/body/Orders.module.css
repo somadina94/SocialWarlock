@@ -8,6 +8,10 @@
   row-gap: 4rem;
 }
 
+.bg-white {
+  background-color: white;
+ }
+ 
 @media (max-width: 68.125em) {
   .orders {
     grid-template-columns: 1fr;

@@ -6,6 +6,7 @@ import {
 } from "react-icons/ai";
 import { BsFillCartPlusFill, BsForwardFill } from "react-icons/bs";
 
+
 import classes from "./Platform.module.css";
 import { getOnePlatform } from "../../api/api";
 import { cartActions } from "../../store/cart-slice";

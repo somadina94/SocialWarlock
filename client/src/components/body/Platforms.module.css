@@ -5,7 +5,14 @@
   justify-items: center;
   align-items: center;
   padding: 3rem;
-  row-gap: 4rem;
+  row-gap: 4rem;  
+}
+
+.is-loading {
+  background-color: #fff;
+}
+
+.loaded {
   background-color: rgba(0, 0, 0, 0.5);
 }
 
