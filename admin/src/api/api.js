@@ -1,18 +1,18 @@
-import axios from "axios";
+import axios from 'axios';
 
 // const axiosInstance = axios.create({
 //   baseURL: "http://127.0.0.1:5002/api/v1/",
 // });
 
 const axiosInstance = axios.create({
-  baseURL: "https://api.provbm.com/api/v1/",
+  baseURL: 'https://api.socialwarlock.com/api/v1/',
 });
 
 export const logIn = async (data) => {
   try {
     const res = await axiosInstance({
-      method: "POST",
-      url: "users/loginAdmin",
+      method: 'POST',
+      url: 'users/loginAdmin',
       data,
     });
     return res.data;
@@ -24,8 +24,8 @@ export const logIn = async (data) => {
 export const logOut = async () => {
   try {
     const res = await axiosInstance({
-      method: "POST",
-      url: "users/logout",
+      method: 'POST',
+      url: 'users/logout',
     });
     return res.data;
   } catch (err) {
@@ -36,8 +36,8 @@ export const logOut = async () => {
 export const getAllUsers = async (jwt) => {
   try {
     const res = await axiosInstance({
-      method: "GET",
-      url: "users",
+      method: 'GET',
+      url: 'users',
       headers: {
         authorization: `Bearer ${jwt}`,
       },
@@ -51,7 +51,7 @@ export const getAllUsers = async (jwt) => {
 export const blockUser = async (jwt, id) => {
   try {
     const res = await axiosInstance({
-      method: "PATCH",
+      method: 'PATCH',
       url: `users/block/${id}`,
       headers: {
         authorization: `Bearer ${jwt}`,
@@ -66,7 +66,7 @@ export const blockUser = async (jwt, id) => {
 export const unblockUser = async (jwt, id) => {
   try {
     const res = await axiosInstance({
-      method: "PATCH",
+      method: 'PATCH',
       url: `users/unblock/${id}`,
       headers: {
         authorization: `Bearer ${jwt}`,
@@ -81,8 +81,8 @@ export const unblockUser = async (jwt, id) => {
 export const getPlatforms = async () => {
   try {
     const res = await axiosInstance({
-      method: "GET",
-      url: "platform",
+      method: 'GET',
+      url: 'platform',
     });
     return res.data;
   } catch (err) {
@@ -93,8 +93,8 @@ export const getPlatforms = async () => {
 export const createPlatform = async (jwt, data) => {
   try {
     const res = await axiosInstance({
-      method: "POST",
-      url: "platform",
+      method: 'POST',
+      url: 'platform',
       data,
       headers: {
         authorization: `Bearer ${jwt}`,
@@ -109,7 +109,7 @@ export const createPlatform = async (jwt, data) => {
 export const getOnePlatform = async (id, jwt) => {
   try {
     const res = await axiosInstance({
-      method: "GET",
+      method: 'GET',
       url: `platform/${id}`,
       headers: {
         authorization: `Bearer ${jwt}`,
@@ -124,7 +124,7 @@ export const getOnePlatform = async (id, jwt) => {
 export const updatePlatform = async (id, data, jwt) => {
   try {
     const res = await axiosInstance({
-      method: "PATCH",
+      method: 'PATCH',
       url: `platform/${id}`,
       data,
       headers: {
@@ -140,8 +140,8 @@ export const updatePlatform = async (id, data, jwt) => {
 export const createOrder = async (jwt, data) => {
   try {
     const res = await axiosInstance({
-      method: "POST",
-      url: "orders",
+      method: 'POST',
+      url: 'orders',
       data,
       headers: {
         authorization: `Bearer ${jwt}`,
@@ -156,8 +156,8 @@ export const createOrder = async (jwt, data) => {
 export const getOrders = async (jwt) => {
   try {
     const res = await axiosInstance({
-      method: "GET",
-      url: "orders/admin",
+      method: 'GET',
+      url: 'orders/admin',
       headers: {
         authorization: `Bearer ${jwt}`,
       },
@@ -171,7 +171,7 @@ export const getOrders = async (jwt) => {
 export const getOneOrder = async (jwt, id) => {
   try {
     const res = await axiosInstance({
-      method: "GET",
+      method: 'GET',
       url: `orders/${id}`,
       headers: {
         authorization: `Bearer ${jwt}`,
@@ -186,7 +186,7 @@ export const getOneOrder = async (jwt, id) => {
 export const approveOrder = async (jwt, id) => {
   try {
     const res = await axiosInstance({
-      method: "PATCH",
+      method: 'PATCH',
       url: `orders/approveOrder/${id}`,
       headers: {
         authorization: `Bearer ${jwt}`,
@@ -201,7 +201,7 @@ export const approveOrder = async (jwt, id) => {
 export const deleteOrder = async (jwt, id) => {
   try {
     const res = await axiosInstance({
-      method: "DELETE",
+      method: 'DELETE',
       url: `orders/${id}`,
       headers: {
         authorization: `Bearer ${jwt}`,
@@ -216,7 +216,7 @@ export const deleteOrder = async (jwt, id) => {
 export const createProduct = async (jwt, data) => {
   try {
     const res = await axiosInstance({
-      method: "POST",
+      method: 'POST',
       url: `products`,
       data,
       headers: {
@@ -232,7 +232,7 @@ export const createProduct = async (jwt, data) => {
 export const getProducts = async (jwt) => {
   try {
     const res = await axiosInstance({
-      method: "GET",
+      method: 'GET',
       url: `products`,
       headers: {
         authorization: `Bearer ${jwt}`,
@@ -247,7 +247,7 @@ export const getProducts = async (jwt) => {
 export const approveProduct = async (jwt, id) => {
   try {
     const res = await axiosInstance({
-      method: "PATCH",
+      method: 'PATCH',
       url: `products/approve/${id}`,
       headers: {
         authorization: `Bearer ${jwt}`,
@@ -262,7 +262,7 @@ export const approveProduct = async (jwt, id) => {
 export const deleteProduct = async (jwt, id) => {
   try {
     const res = await axiosInstance({
-      method: "DELETE",
+      method: 'DELETE',
       url: `products/${id}`,
       headers: {
         authorization: `Bearer ${jwt}`,

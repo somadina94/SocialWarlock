@@ -1,18 +1,18 @@
-import axios from "axios";
+import axios from 'axios';
 
 // const axiosInstance = axios.create({
 //   baseURL: "http://127.0.0.1:5002/api/v1/",
 // });
 
 const axiosInstance = axios.create({
-  baseURL: "https://api.provbm.com/api/v1/",
+  baseURL: 'https://api.socialwarlock.com/api/v1/',
 });
 
 export const createAccount = async (data) => {
   try {
     const res = await axiosInstance({
-      method: "POST",
-      url: "users/signUp",
+      method: 'POST',
+      url: 'users/signUp',
       data,
     });
     return res.data;
@@ -24,8 +24,8 @@ export const createAccount = async (data) => {
 export const logIn = async (data) => {
   try {
     const res = await axiosInstance({
-      method: "POST",
-      url: "users/loginUser",
+      method: 'POST',
+      url: 'users/loginUser',
       data,
     });
     return res.data;
@@ -37,8 +37,8 @@ export const logIn = async (data) => {
 export const logOut = async () => {
   try {
     const res = await axiosInstance({
-      method: "POST",
-      url: "users/logout",
+      method: 'POST',
+      url: 'users/logout',
     });
     return res.data;
   } catch (err) {
@@ -49,8 +49,8 @@ export const logOut = async () => {
 export const updatePassword = async (jwt, data) => {
   try {
     const res = await axiosInstance({
-      method: "PATCH",
-      url: "users/updatePassword",
+      method: 'PATCH',
+      url: 'users/updatePassword',
       data,
       headers: {
         authorization: `Bearer ${jwt}`,
@@ -65,8 +65,8 @@ export const updatePassword = async (jwt, data) => {
 export const forgotPassword = async (data) => {
   try {
     const res = await axiosInstance({
-      method: "POST",
-      url: "users/forgotPassword",
+      method: 'POST',
+      url: 'users/forgotPassword',
       data,
     });
     return res.data;
@@ -78,7 +78,7 @@ export const forgotPassword = async (data) => {
 export const resetPassword = async (data, token) => {
   try {
     const res = await axiosInstance({
-      method: "POST",
+      method: 'POST',
       url: `users/resetPassword/${token}`,
       data,
     });
@@ -91,8 +91,8 @@ export const resetPassword = async (data, token) => {
 export const getPlatforms = async () => {
   try {
     const res = await axiosInstance({
-      method: "GET",
-      url: "platform",
+      method: 'GET',
+      url: 'platform',
     });
     return res.data;
   } catch (err) {
@@ -103,7 +103,7 @@ export const getPlatforms = async () => {
 export const getOnePlatform = async (id) => {
   try {
     const res = await axiosInstance({
-      method: "GET",
+      method: 'GET',
       url: `platform/${id}`,
     });
     return res.data;
@@ -115,8 +115,8 @@ export const getOnePlatform = async (id) => {
 export const createOrder = async (jwt, data) => {
   try {
     const res = await axiosInstance({
-      method: "POST",
-      url: "orders",
+      method: 'POST',
+      url: 'orders',
       data,
       headers: {
         authorization: `Bearer ${jwt}`,
@@ -131,8 +131,8 @@ export const createOrder = async (jwt, data) => {
 export const createCheckout = async (jwt, data) => {
   try {
     const res = await axiosInstance({
-      method: "POST",
-      url: "payment/checkout",
+      method: 'POST',
+      url: 'payment/checkout',
       data,
       headers: {
         authorization: `Bearer ${jwt}`,
@@ -147,8 +147,8 @@ export const createCheckout = async (jwt, data) => {
 export const getOrders = async (jwt) => {
   try {
     const res = await axiosInstance({
-      method: "GET",
-      url: "orders",
+      method: 'GET',
+      url: 'orders',
       headers: {
         authorization: `Bearer ${jwt}`,
       },
@@ -162,7 +162,7 @@ export const getOrders = async (jwt) => {
 export const getOneOrder = async (jwt, id) => {
   try {
     const res = await axiosInstance({
-      method: "GET",
+      method: 'GET',
       url: `orders/${id}`,
       headers: {
         authorization: `Bearer ${jwt}`,
