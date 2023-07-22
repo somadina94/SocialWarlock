@@ -1,10 +1,10 @@
-const Order = require("../models/orderModel");
-const Product = require("../models/productModel");
-const AppError = require("../util/appError");
-const Platfrom = require("../models/platformModel");
-const catchAsync = require("../util/catchAsync");
-const Email = require("../util/email");
-const coinbase = require("coinbase-commerce-node");
+const Order = require('../models/orderModel');
+const Product = require('../models/productModel');
+const AppError = require('../util/appError');
+const Platfrom = require('../models/platformModel');
+const catchAsync = require('../util/catchAsync');
+const Email = require('../util/email');
+const coinbase = require('coinbase-commerce-node');
 
 const Client = coinbase.Client;
 const clientObj = Client.init(process.env.COINBASE_API_KEY);
@@ -44,13 +44,13 @@ exports.checkout = catchAsync(async (req, res, next) => {
   await checkPrice();
 
   const charge = await resources.Charge.create({
-    name: "Order checkout",
-    description: "Social account purchase Charge",
+    name: 'Order checkout',
+    description: 'Social account purchase Charge',
     local_price: {
       amount: totalPrice,
-      currency: "USD",
+      currency: 'USD',
     },
-    pricing_type: "fixed_price",
+    pricing_type: 'fixed_price',
     metadata: {
       totalPrice,
       totalQuantity,
@@ -60,7 +60,7 @@ exports.checkout = catchAsync(async (req, res, next) => {
   });
 
   res.status(200).json({
-    status: "success",
+    status: 'success',
     data: {
       charge,
     },
@@ -70,15 +70,16 @@ exports.checkout = catchAsync(async (req, res, next) => {
 exports.webhookResponse = async (req, res, next) => {
   const event = webhook.verifyEventBody(
     req.rawBody,
-    req.headers["x-cc-webhook-signature"],
+    req.headers['x-cc-webhook-signature'],
     process.env.COINBASE_WEBHOOK_SECRET
   );
 
-  if (event.type === "charge:confirmed") {
+  if (event.type === 'charge:confirmed') {
     const metaData = event.data.metadata;
     const cart = JSON.parse(metaData.cart);
     const totalQuantity = metaData.totalQuantity;
     const user = metaData.user;
+    const totalPrice = metaData.totalPrice;
 
     const platforms = cart.map((el) => {
       const data = {
@@ -90,23 +91,23 @@ exports.webhookResponse = async (req, res, next) => {
       return data;
     });
 
-    let totalPrice = 0;
-    const checkPrice = () => {
-      return new Promise((resolve, reject) => {
-        let counter = 0;
-        platforms.forEach(async (el) => {
-          const response = await Platfrom.findById(el.id);
-          const price = response.price * el.quantity;
-          totalPrice += price;
-          if (counter === platforms.length - 1) {
-            resolve();
-          }
-          counter++;
-        });
-      });
-    };
+    // let totalPrice = 0;
+    // const checkPrice = () => {
+    //   return new Promise((resolve, reject) => {
+    //     let counter = 0;
+    //     platforms.forEach(async (el) => {
+    //       const response = await Platfrom.findById(el.id);
+    //       const price = response.price * el.quantity;
+    //       totalPrice += price;
+    //       if (counter === platforms.length - 1) {
+    //         resolve();
+    //       }
+    //       counter++;
+    //     });
+    //   });
+    // };
 
-    await checkPrice();
+    // await checkPrice();
 
     const makeOrder = () => {
       return new Promise((resolve, reject) => {
@@ -118,9 +119,7 @@ exports.webhookResponse = async (req, res, next) => {
             active: true,
           });
 
-          const filteredByName = productsArray.filter(
-            (doc) => doc.platform.name === el.name
-          );
+          const filteredByName = productsArray.filter((doc) => doc.platform.name === el.name);
 
           const [...quantityPurchased] = filteredByName.slice(0, el.quantity);
           quantityPurchased.forEach((el) => purchased.push(el));
@@ -165,7 +164,7 @@ exports.webhookResponse = async (req, res, next) => {
 
     const adminEmail = {
       email: process.env.ADMIN_EMAIL,
-      name: "Admin Social Warlock",
+      name: 'Admin Social Warlock',
     };
 
     await new Email(adminEmail).sendNewOrder();
