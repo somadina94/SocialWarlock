@@ -1,11 +1,11 @@
-import { Fragment } from "react";
-import { Outlet } from "react-router-dom";
-import { AiOutlineWhatsApp } from "react-icons/ai";
-import ReactWhatsapp from "react-whatsapp";
+import { Fragment } from 'react';
+import { Outlet } from 'react-router-dom';
+import { AiOutlineWhatsApp } from 'react-icons/ai';
+import ReactWhatsapp from 'react-whatsapp';
 
-import classes from "../UI/General.module.css";
-import Header from "../main/Header";
-import Footer from "../main/Footer";
+import classes from '../UI/General.module.css';
+import Header from '../main/Header';
+import Footer from '../main/Footer';
 
 const UserLayout = () => {
   return (
@@ -14,8 +14,8 @@ const UserLayout = () => {
       <main>
         <Outlet />
       </main>
-      <ReactWhatsapp number="+2347025204152" className={classes.whatsapp}>
-        <AiOutlineWhatsApp className={classes["whatsapp-icon"]} />
+      <ReactWhatsapp number="+447300901462" className={classes.whatsapp}>
+        <AiOutlineWhatsApp className={classes['whatsapp-icon']} />
       </ReactWhatsapp>
       <Footer />
     </Fragment>
