@@ -1,26 +1,30 @@
-import { useDispatch } from "react-redux";
-import {
-  AiFillFacebook,
-  AiFillInstagram,
-  AiFillLinkedin,
-} from "react-icons/ai";
-import { BsFillCartPlusFill, BsForwardFill } from "react-icons/bs";
+import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { AiFillFacebook, AiFillInstagram, AiFillLinkedin } from 'react-icons/ai';
+import { BsFillCartPlusFill, BsForwardFill } from 'react-icons/bs';
 
-
-import classes from "./Platform.module.css";
-import { getOnePlatform } from "../../api/api";
-import { cartActions } from "../../store/cart-slice";
+import classes from './Platform.module.css';
+import { getOnePlatform } from '../../api/api';
+import { cartActions } from '../../store/cart-slice';
+import { getProductCount } from '../../api/api';
 
 const Platform = (props) => {
+  const [status, setStatus] = useState(false);
   const dispatch = useDispatch();
-  const { name, id, price, status } = props;
+  const { name, id, price } = props;
 
-  const Icon =
-    name === "Facebook"
-      ? AiFillFacebook
-      : name === "Instagram"
-      ? AiFillInstagram
-      : AiFillLinkedin;
+  useEffect(() => {
+    const request = async () => {
+      const res = await getProductCount(name);
+
+      if (res.status === 'success' && res.data.productCount > 2) {
+        setStatus(true);
+      }
+    };
+    request();
+  }, [name]);
+
+  const Icon = name === 'Facebook' ? AiFillFacebook : name === 'Instagram' ? AiFillInstagram : AiFillLinkedin;
 
   const addProdToCartHandler = () => {
     dispatch(
@@ -32,11 +36,11 @@ const Platform = (props) => {
       })
     );
   };
-  const displayStatus = status ? "In-stock" : "Out of stock";
+  const displayStatus = status ? 'In-stock' : 'Out of stock';
 
   return (
     <div className={classes.platform}>
-      <div className={classes["logo-container"]}>
+      <div className={classes['logo-container']}>
         <Icon className={classes.icon} />
       </div>
       <div className={classes.name}>
@@ -50,12 +54,12 @@ const Platform = (props) => {
       <div className={classes.details}>
         <span>status</span>
         <BsForwardFill className={classes.arrow} />
-        <span className={`${status ? classes.available : classes.unavailable}`}>
-          {displayStatus}
-        </span>
+        <span className={`${status ? classes.available : classes.unavailable}`}>{displayStatus}</span>
       </div>
-      <div className={classes["cart-action"]}>
-        <button onClick={addProdToCartHandler} disabled={!status}> <p>Add to Cart</p>
+      <div className={classes['cart-action']}>
+        <button onClick={addProdToCartHandler} disabled={!status}>
+          {' '}
+          <p>Add to Cart</p>
           <BsFillCartPlusFill className={classes.add} />
         </button>
       </div>

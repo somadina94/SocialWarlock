@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // const axiosInstance = axios.create({
-//   baseURL: "http://127.0.0.1:5002/api/v1/",
+//   baseURL: 'http://127.0.0.1:5002/api/v1/',
 // });
 
 const axiosInstance = axios.create({
@@ -105,6 +105,18 @@ export const getOnePlatform = async (id) => {
     const res = await axiosInstance({
       method: 'GET',
       url: `platform/${id}`,
+    });
+    return res.data;
+  } catch (err) {
+    return err.response.data;
+  }
+};
+
+export const getProductCount = async (name) => {
+  try {
+    const res = await axiosInstance({
+      method: 'GET',
+      url: `products/${name}`,
     });
     return res.data;
   } catch (err) {

@@ -1,6 +1,6 @@
-const Product = require("../models/productModel");
-const AppError = require("../util/appError");
-const catchAsync = require("../util/catchAsync");
+const Product = require('../models/productModel');
+const AppError = require('../util/appError');
+const catchAsync = require('../util/catchAsync');
 
 exports.createProduct = catchAsync(async (req, res, next) => {
   const product = await Product.create(req.body);
@@ -10,8 +10,8 @@ exports.createProduct = catchAsync(async (req, res, next) => {
   }
 
   res.status(201).json({
-    status: "success",
-    message: "Product created successfully.",
+    status: 'success',
+    message: 'Product created successfully.',
     data: {
       product,
     },
@@ -26,7 +26,7 @@ exports.getAllProducts = catchAsync(async (req, res, next) => {
   }
 
   res.status(200).json({
-    status: "success",
+    status: 'success',
     count: products.length,
     data: {
       products,
@@ -38,11 +38,11 @@ exports.getOneProduct = catchAsync(async (req, res, next) => {
   const product = await Product.findById(req.params.id);
 
   if (!product) {
-    return next(new AppError("No product found with that ID.", 404));
+    return next(new AppError('No product found with that ID.', 404));
   }
 
   res.status(200).json({
-    status: "success",
+    status: 'success',
     data: {
       product,
     },
@@ -55,8 +55,8 @@ exports.updateProduct = catchAsync(async (req, res, next) => {
   });
 
   res.status(200).json({
-    status: "success",
-    message: "Product update successfully.",
+    status: 'success',
+    message: 'Product update successfully.',
     data: {
       product,
     },
@@ -71,26 +71,35 @@ exports.deleteProduct = catchAsync(async (req, res, next) => {
   }
 
   res.status(204).json({
-    status: "success",
+    status: 'success',
   });
 });
 
 exports.approveProduct = catchAsync(async (req, res, next) => {
-  const product = await Product.findByIdAndUpdate(
-    req.params.id,
-    { status: true },
-    { new: true }
-  );
+  const product = await Product.findByIdAndUpdate(req.params.id, { status: true }, { new: true });
 
   if (!product) {
     return next(new AppError("Couldn't find any product with that ID.", 404));
   }
 
   res.status(200).json({
-    status: "success",
+    status: 'success',
     message: `${product.name} product activated successfully.`,
     data: {
       product,
+    },
+  });
+});
+
+exports.getProductNumber = catchAsync(async (req, res, next) => {
+  const products = await Product.find({ name: req.params.productName, status: true });
+
+  const productCount = products.length;
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      productCount,
     },
   });
 });

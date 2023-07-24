@@ -1,17 +1,17 @@
-import { Fragment, useEffect, useState } from "react";
-import ReactDOM from "react-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { useCookies } from "react-cookie";
+import { Fragment, useEffect, useState } from 'react';
+import ReactDOM from 'react-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { useCookies } from 'react-cookie';
 // import { useNavigate } from "react-router-dom";
 
-import classes from "./Cart.module.css";
-import styles from "../UI/General.module.css";
-import Backdrop from "../UI/Backdrop";
-import { cartActions } from "../../store/cart-slice";
-import CartItems from "./CartItems";
-import { createCheckout } from "../../api/api";
-import Spinner from "../UI/Spinner";
-import { alertActions } from "../../store/alert-slice";
+import classes from './Cart.module.css';
+import styles from '../UI/General.module.css';
+import Backdrop from '../UI/Backdrop';
+import { cartActions } from '../../store/cart-slice';
+import CartItems from './CartItems';
+import { createCheckout } from '../../api/api';
+import Spinner from '../UI/Spinner';
+import { alertActions } from '../../store/alert-slice';
 
 const CartModal = () => {
   const dispatch = useDispatch();
@@ -22,7 +22,7 @@ const CartModal = () => {
   const totalQuantity = useSelector((state) => state.cart.totalQuantity);
   const cartVisibility = useSelector((state) => state.cart.cartVisibility);
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
-  const { jwt } = useCookies(["jwt"])[0];
+  const { jwt } = useCookies(['jwt'])[0];
   // const navigate = useNavigate();
 
   const totalAmount = `$${totalPrice.toFixed(2)}`;
@@ -47,30 +47,22 @@ const CartModal = () => {
     };
     const res = await createCheckout(jwt, data);
 
-    if (res.status === "success") {
+    if (res.status === 'success') {
       const url = res.data.charge.hosted_url;
       window.location.href = url;
     } else {
-      dispatch(
-        alertActions.setState({ message: res.message, status: "error" })
-      );
+      dispatch(alertActions.setState({ message: res.message, status: 'error' }));
     }
 
     dispatch(cartActions.clearCart());
     dispatch(cartActions.hideCart());
   };
 
-  const cartClasses = cartVisibility
-    ? `${classes.cart} ${styles.add}`
-    : `${classes.cart} ${styles.remove}`;
+  const cartClasses = cartVisibility ? `${classes.cart} ${styles.add}` : `${classes.cart} ${styles.remove}`;
 
   return (
     <div className={cartClasses}>
-      {!showOrderBtn && (
-        <p className={classes.empty}>
-          Your cart is empty. Please go ahead and add items to cart.
-        </p>
-      )}
+      {!showOrderBtn && <p className={classes.empty}>Your cart is empty. Please go ahead and add items to cart.</p>}
       {showSpinner && <Spinner />}
       <ul>
         {cart.map((prod) => (
@@ -97,17 +89,15 @@ const CartModal = () => {
             Proceed to payment
           </button>
         )}
-        {!isLoggedIn && (
-          <p className={classes.warning}>Please login to proceed</p>
-        )}
+        {!isLoggedIn && <p className={classes.warning}>Please login to pay</p>}
       </div>
     </div>
   );
 };
 
 const Cart = () => {
-  const backdropEl = document.getElementById("backdrop-root");
-  const overlayEl = document.getElementById("overlay-root");
+  const backdropEl = document.getElementById('backdrop-root');
+  const overlayEl = document.getElementById('overlay-root');
 
   return (
     <Fragment>
