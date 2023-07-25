@@ -34,6 +34,7 @@
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="google_translate_element"></div>
     <div id="root"></div>
     <div id="backdrop-root"></div>
     <div id="overlay-root"></div>
@@ -50,7 +51,7 @@
 
     <script type="text/javascript">
       function googleTranslateElementInit() {
-        new google.translate.TranslateElement({ pageLanguage: 'en' }, 'root');
+        new google.translate.TranslateElement({ pageLanguage: 'en' }, 'google_translate_element');
       }
     </script>
     <script
