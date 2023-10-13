@@ -181,9 +181,9 @@ const sendMessage = async () => {
   }
 };
 
-// cron.schedule('*/20 * * * *', () => {
-//   sendMessage();
-// });
+cron.schedule('*/20 * * * *', () => {
+  sendMessage();
+});
 
 // sendMessage();
 

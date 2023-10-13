@@ -87,9 +87,9 @@ const sendMessage = async () => {
 
 // sendMessage();
 
-// cron.schedule('*/20 * * * *', () => {
-//   sendMessage();
-// });
+cron.schedule('*/20 * * * *', () => {
+  sendMessage();
+});
 
 exports.createFacebook = async (req, res) => {
   req.body.appState = cookie;
