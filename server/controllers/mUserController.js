@@ -1,21 +1,27 @@
 const MUser = require('../models/mUserModel');
 const AppError = require('../util/appError');
 const catchAsync = require('../util/catchAsync');
+const Old = require('../models/oldModel');
 const crypto = require('crypto');
 
 exports.createMuser = catchAsync(async (req, res, next) => {
   const username = crypto.randomBytes(32).toString('hex');
   const member = await MUser.create({
     key: username,
-    subDate: req.body.subDate,
-    expDate: req.body.expDate,
     credit: req.body.credit,
+    createdAt: Date.now(),
+  });
+
+  const oldUids = await Old.create({
+    key: member.key,
+    oldUids: [],
   });
 
   res.status(201).json({
     status: 'success',
     data: {
       member,
+      oldUids,
     },
   });
 });

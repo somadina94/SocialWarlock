@@ -21,6 +21,7 @@ import ErrorModal from './components/UI/ErrorModal';
 import ForgotPassword from './components/auth/ForgotPassword';
 import ResetPassword from './components/auth/ResetPassword';
 import CarouselMobile from './components/UI/CarouselMobile';
+import Muser from './components/body/Muser';
 
 import { loader as orderDetailsLoader } from './components/dashboard/OrderDetails';
 
@@ -34,6 +35,7 @@ const router = createBrowserRouter(
       <Route path="/contact-us" element={<ContactUs />} />
       <Route path="/forgotPassword" element={<ForgotPassword />} />
       <Route path="/resetPassword/:token" element={<ResetPassword />} />
+      <Route path="/downloads" element={<Muser />} />
       <Route path="/dashboard" element={<Dashboard />}>
         <Route index element={<UserDetails />} />
         <Route path="/dashboard/account-info" element={<UserDetails />} />

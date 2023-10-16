@@ -3,4 +3,7 @@
 # dependencies
 /node_modules
 config.env
+cookies.js
+usernames.js
+messages.js
 

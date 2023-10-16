@@ -5,9 +5,10 @@ const mUserSchema = new mongoose.Schema({
     type: String,
     unique: true,
   },
-  subDate: Date,
-  expDate: Date,
+  String,
+  all: String,
   credit: Number,
+  createdAt: Date,
 });
 
 const MUser = mongoose.model('MUser', mUserSchema);

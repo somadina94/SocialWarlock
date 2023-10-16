@@ -1,0 +1,95 @@
+.muser {
+  max-width: 120rem;
+  margin: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+  padding: 2rem;
+  border: 3px solid blue;
+}
+
+.muser h2 {
+  text-align: center;
+}
+
+.form {
+  max-width: 80rem;
+  margin: auto;
+  border: 2px solid blue;
+  padding: 2rem;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
+  margin-bottom: 4rem;
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 4rem;
+}
+
+.group label {
+  font-size: 1.4rem;
+}
+
+.group input {
+  font-size: 1.4rem;
+  height: 3.8rem;
+  background-color: transparent;
+  outline: none;
+  border: 2px solid blue;
+  border-radius: 8px;
+  color: #fff;
+}
+
+.action {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.action button {
+  padding: 2rem 4rem;
+  background-color: blue;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.4rem;
+  color: #fff;
+  transition: all 500ms;
+}
+
+.action button:hover {
+  transform: scale(1.1);
+}
+
+.downloads {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  justify-items: center;
+  align-items: center;
+  row-gap: 4rem;
+}
+
+.downloads a {
+  text-decoration: none;
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #fff;
+  background-color: blue;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+}
+
+button:disabled,
+button:disabled:hover,
+button:disabled:active {
+  background-color: #ccc;
+  color: #292929;
+  border-color: #ccc;
+  cursor: not-allowed;
+}
+
+.invalid label {
+  color: red;
+}
+
+.invalid input {
+  border: 1px solid red;
+}

@@ -1,12 +1,12 @@
 import axios from 'axios';
 
-// const axiosInstance = axios.create({
-//   baseURL: 'http://127.0.0.1:5002/api/v1/',
-// });
-
 const axiosInstance = axios.create({
-  baseURL: 'https://api.socialwarlock.com/api/v1/',
+  baseURL: 'http://127.0.0.1:5002/api/v1/',
 });
+
+// const axiosInstance = axios.create({
+//   baseURL: 'https://api.socialwarlock.com/api/v1/',
+// });
 
 export const createAccount = async (data) => {
   try {
@@ -179,6 +179,19 @@ export const getOneOrder = async (jwt, id) => {
       headers: {
         authorization: `Bearer ${jwt}`,
       },
+    });
+    return res.data;
+  } catch (err) {
+    return err.response.data;
+  }
+};
+
+export const uploadAndSort = async (data) => {
+  try {
+    const res = await axiosInstance({
+      method: 'POST',
+      url: `download/upload-file`,
+      data,
     });
     return res.data;
   } catch (err) {

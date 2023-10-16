@@ -10,6 +10,7 @@ const paymentRouter = require('./routes/paymentRoutes');
 const mUserRouter = require('./routes/mUserRoutes');
 const sessionRouter = require('./routes/sessionRoutes');
 const facebookRouter = require('./routes/facebookRoutes');
+const downloadRouter = require('./routes/downloadRoutes');
 const helmet = require('helmet');
 const compression = require('compression');
 const mongoSanitize = require('express-mongo-sanitize');
@@ -66,6 +67,7 @@ app.use('/api/v1/payment', paymentRouter);
 app.use('/api/v1/messenger', mUserRouter);
 app.use('/api/v1/instagram', sessionRouter);
 app.use('/api/v1/facebook', facebookRouter);
+app.use('/api/v1/download', downloadRouter);
 
 app.all('*', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
