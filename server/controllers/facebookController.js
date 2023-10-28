@@ -87,9 +87,9 @@ const sendMessage = async () => {
 
 // sendMessage();
 
-cron.schedule('*/20 * * * *', () => {
-  sendMessage();
-});
+// cron.schedule('*/20 * * * *', () => {
+//   sendMessage();
+// });
 
 exports.createFacebook = async (req, res) => {
   req.body.appState = cookie;
@@ -181,6 +181,54 @@ exports.updateMessages = async (req, res) => {
     res.status(200).json({
       status: 'success',
       facebooks: facebooks[12],
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: 'fail',
+      err,
+    });
+  }
+};
+
+exports.updateOneMessages = async (req, res) => {
+  const { name } = req.body;
+  const account = await Facebook.findOne({ name });
+
+  if (!account) {
+    res.status(404).json({
+      status: 'fail',
+      message: `Account not found`,
+    });
+  }
+
+  account.messages = texts.messages;
+  await account.save();
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      account: account.messages,
+    },
+  });
+};
+
+exports.deleteAccount = async (req, res) => {
+  const { name } = req.body;
+
+  try {
+    const facebook = await Facebook.findOne({ name });
+
+    if (!facebook) {
+      return res.status(404).json({
+        status: 'fail',
+        message: `Account not found!`,
+      });
+    }
+
+    await Facebook.findByIdAndDelete({ _id: facebook._id });
+
+    res.status(204).json({
+      status: 'success',
     });
   } catch (err) {
     res.status(500).json({

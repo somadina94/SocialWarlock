@@ -73,7 +73,8 @@ exports.createSort = catchAsync(async (req, res, next) => {
       line.includes('"male"') &&
       !line.includes('"user_id"') &&
       !line.includes('Married') &&
-      !line.includes('In a relationship')
+      !line.includes('In a relationship') &&
+      !line.includes('Engaged')
     ) {
       const uid = `${line.split(',')[0].split('"')[1]}\n`;
       if (!oldData.includes(uid) && !isNaN(Number(uid))) singleMales.push(uid);
@@ -82,7 +83,8 @@ exports.createSort = catchAsync(async (req, res, next) => {
       line.includes('female') &&
       !line.includes('user_id') &&
       !line.includes('Married') &&
-      !line.includes('In a relationship')
+      !line.includes('In a relationship') &&
+      !line.includes('Engaged')
     ) {
       const uid = `${line.split(',')[0].split('"')[1]}\n`;
       if (!oldData.includes(uid) && !isNaN(Number(uid))) singleFemales.push(uid);
@@ -90,7 +92,7 @@ exports.createSort = catchAsync(async (req, res, next) => {
       line.startsWith('"') &&
       line.includes('female') &&
       !line.includes('user_id') &&
-      (line.includes('Married') || !line.includes('In a relationship'))
+      (line.includes('Married') || line.includes('In a relationship') || line.includes('Engaged'))
     ) {
       const uid = `${line.split(',')[0].split('"')[1]}\n`;
       if (!oldData.includes(uid) && !isNaN(Number(uid))) marriedFemales.push(uid);
@@ -98,7 +100,7 @@ exports.createSort = catchAsync(async (req, res, next) => {
       line.startsWith('"') &&
       line.includes('"male"') &&
       !line.includes('user_id') &&
-      (line.includes('Married') || !line.includes('In a relationship'))
+      (line.includes('Married') || line.includes('In a relationship') || line.includes('Engaged'))
     ) {
       const uid = `${line.split(',')[0].split('"')[1]}\n`;
       if (!oldData.includes(uid) && !isNaN(Number(uid))) marriedMales.push(uid);
