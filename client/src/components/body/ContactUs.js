@@ -1,22 +1,25 @@
-import { Fragment, useRef, useState } from "react";
-import {
-  BsFillPersonFill,
-  BsFillEnvelopeAtFill,
-  BsEnvelopeFill,
-} from "react-icons/bs";
-import useInput from "../../hooks/userInput";
-import emailjs from "@emailjs/browser";
-import { useDispatch } from "react-redux";
-import { Helmet } from "react-helmet-async";
+import { Fragment, useRef, useState } from 'react';
+import { BsFillPersonFill, BsFillEnvelopeAtFill, BsEnvelopeFill } from 'react-icons/bs';
+import useInput from '../../hooks/userInput';
+import emailjs from '@emailjs/browser';
+import { useDispatch } from 'react-redux';
+import { Helmet } from 'react-helmet-async';
+import { useSpring, animated } from 'react-spring';
 
-import classes from "./ContactUs.module.css";
-import Spinner from "../UI/Spinner";
-import { alertActions } from "../../store/alert-slice";
+import classes from './ContactUs.module.css';
+import Spinner from '../UI/Spinner';
+import { alertActions } from '../../store/alert-slice';
 
 const ContactUs = () => {
   const dispatch = useDispatch();
   const formRef = useRef();
   const [showSpinner, setShowSpinner] = useState(false);
+  const animation = useSpring({
+    marginTop: 0,
+    opacity: 1,
+    from: { marginTop: -50, opacity: 0 },
+    config: { tension: 1000, friction: 10, duration: 1000 },
+  });
   const {
     value: nameInput,
     enteredValueIsValid: nameInputIsValid,
@@ -24,7 +27,7 @@ const ContactUs = () => {
     valueInputChangedHandler: nameInputChangedHandler,
     valueInputBlurHandler: nameInputBlurHandler,
     reset: nameInputReset,
-  } = useInput((value) => value.trim() !== "");
+  } = useInput((value) => value.trim() !== '');
 
   const {
     value: emailInput,
@@ -33,7 +36,7 @@ const ContactUs = () => {
     valueInputChangedHandler: emailInputChangedHandler,
     valueInputBlurHandler: emailInputBlurHandler,
     reset: emailInputReset,
-  } = useInput((value) => value.trim().includes("@"));
+  } = useInput((value) => value.trim().includes('@'));
 
   const {
     value: messageInput,
@@ -42,7 +45,7 @@ const ContactUs = () => {
     valueInputChangedHandler: messageInputChangedHandler,
     valueInputBlurHandler: messageInputBlurHandler,
     reset: messageInputReset,
-  } = useInput((value) => value.trim() !== "");
+  } = useInput((value) => value.trim() !== '');
 
   let formIsValid = false;
 
@@ -54,52 +57,41 @@ const ContactUs = () => {
     e.preventDefault();
     setShowSpinner(true);
 
-    emailjs
-      .sendForm(
-        "service_ua44fo2",
-        "template_woqbj77",
-        formRef.current,
-        "ljDiiwdlHrRgfP4dr"
-      )
-      .then(
-        (result) => {
-          dispatch(
-            alertActions.setState({
-              message:
-                "Email sent succssfully! We will get back to you as soon as possible.",
-              status: "success",
-            })
-          );
-          e.target.reset();
-          setShowSpinner(false);
-          nameInputReset();
-          emailInputReset();
-          messageInputReset();
-        },
-        (error) => {
-          dispatch(
-            alertActions.setState({
-              message:
-                "There was an error sending your email, please try again later or copy our email and email us direct from your mailbox",
-              status: "error",
-            })
-          );
-          setShowSpinner(false);
-        }
-      );
+    emailjs.sendForm('service_ua44fo2', 'template_woqbj77', formRef.current, 'ljDiiwdlHrRgfP4dr').then(
+      (result) => {
+        dispatch(
+          alertActions.setState({
+            message: 'Email sent succssfully! We will get back to you as soon as possible.',
+            status: 'success',
+          })
+        );
+        e.target.reset();
+        setShowSpinner(false);
+        nameInputReset();
+        emailInputReset();
+        messageInputReset();
+      },
+      (error) => {
+        dispatch(
+          alertActions.setState({
+            message:
+              'There was an error sending your email, please try again later or copy our email and email us direct from your mailbox',
+            status: 'error',
+          })
+        );
+        setShowSpinner(false);
+        setTimeout(() => {
+          dispatch(alertActions.resetState());
+        }, 2000);
+      }
+    );
   };
 
-  const nameInputClasses = nameInputIsInvalid
-    ? `${classes.group} ${classes.invalid}`
-    : classes.group;
+  const nameInputClasses = nameInputIsInvalid ? `${classes.group} ${classes.invalid}` : classes.group;
 
-  const emailInputClasses = emailInputIsInvalid
-    ? `${classes.group} ${classes.invalid}`
-    : classes.group;
+  const emailInputClasses = emailInputIsInvalid ? `${classes.group} ${classes.invalid}` : classes.group;
 
-  const messageInputClasses = messageInputIsInvalid
-    ? `${classes.group} ${classes.invalid}`
-    : classes.group;
+  const messageInputClasses = messageInputIsInvalid ? `${classes.group} ${classes.invalid}` : classes.group;
 
   return (
     <Fragment>
@@ -111,59 +103,58 @@ const ContactUs = () => {
         />
         <link rel="canonical" href="/contact-us" />
       </Helmet>
-      <form className={classes.form} ref={formRef} onSubmit={sendEmailHandler}>
-        {showSpinner && <Spinner />}
-        <div className={nameInputClasses}>
-          <label htmlFor="name">Name</label>
-          <div className={classes["input-group"]}>
-            <BsFillPersonFill className={classes.icon} />
-            <input
-              type="text"
-              name="name"
-              value={nameInput}
-              onChange={nameInputChangedHandler}
-              onBlur={nameInputBlurHandler}
-            />
+      <animated.div style={animation}>
+        <form className={classes.form} ref={formRef} onSubmit={sendEmailHandler}>
+          {showSpinner && <Spinner />}
+          <div className={nameInputClasses}>
+            <label htmlFor="name">Name</label>
+            <div className={classes['input-group']}>
+              <BsFillPersonFill className={classes.icon} />
+              <input
+                type="text"
+                name="name"
+                value={nameInput}
+                onChange={nameInputChangedHandler}
+                onBlur={nameInputBlurHandler}
+              />
+            </div>
+            {nameInputIsInvalid && <span>Please enter your name.</span>}
           </div>
-          {nameInputIsInvalid && <span>Please enter your name.</span>}
-        </div>
-        <div className={emailInputClasses}>
-          <label htmlFor="email">Emaill address</label>
-          <div className={classes["input-group"]}>
-            <BsFillEnvelopeAtFill className={classes.icon} />
-            <input
-              type="text"
-              name="email"
-              value={emailInput}
-              onChange={emailInputChangedHandler}
-              onBlur={emailInputBlurHandler}
-            />
+          <div className={emailInputClasses}>
+            <label htmlFor="email">Emaill address</label>
+            <div className={classes['input-group']}>
+              <BsFillEnvelopeAtFill className={classes.icon} />
+              <input
+                type="text"
+                name="email"
+                value={emailInput}
+                onChange={emailInputChangedHandler}
+                onBlur={emailInputBlurHandler}
+              />
+            </div>
+            {emailInputIsInvalid && <span>Please enter your valid email.</span>}
           </div>
-          {emailInputIsInvalid && <span>Please enter your valid email.</span>}
-        </div>
-        <div className={messageInputClasses}>
-          <label htmlFor="message">Message</label>
-          <div className={classes["input-group"]}>
-            <BsEnvelopeFill
-              className={classes.icon}
-              style={{ alignSelf: "flex-start" }}
-            />
-            <textarea
-              type="text"
-              name="message"
-              value={messageInput}
-              onChange={messageInputChangedHandler}
-              onBlur={messageInputBlurHandler}
-            />
+          <div className={messageInputClasses}>
+            <label htmlFor="message">Message</label>
+            <div className={classes['input-group']}>
+              <BsEnvelopeFill className={classes.icon} style={{ alignSelf: 'flex-start' }} />
+              <textarea
+                type="text"
+                name="message"
+                value={messageInput}
+                onChange={messageInputChangedHandler}
+                onBlur={messageInputBlurHandler}
+              />
+            </div>
+            {messageInputIsInvalid && <span>Message field cannot be empty.</span>}
           </div>
-          {messageInputIsInvalid && <span>Message field cannot be empty.</span>}
-        </div>
-        <div className={classes.action}>
-          <button type="submit" disabled={!formIsValid}>
-            Send email
-          </button>
-        </div>
-      </form>
+          <div className={classes.action}>
+            <button type="submit" disabled={!formIsValid}>
+              Send email
+            </button>
+          </div>
+        </form>
+      </animated.div>
     </Fragment>
   );
 };

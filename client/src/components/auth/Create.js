@@ -1,33 +1,33 @@
-import { Fragment, useState } from "react";
-import useInput from "../../hooks/userInput";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { useCookies } from "react-cookie";
-import { Helmet } from "react-helmet-async";
+import { Fragment, useState } from 'react';
+import useInput from '../../hooks/userInput';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
+import { Helmet } from 'react-helmet-async';
+import { BsFillPersonFill, BsFillEnvelopeAtFill, BsFillKeyFill, BsEyeFill, BsEyeSlashFill } from 'react-icons/bs';
+import { useSpring, animated } from 'react-spring';
 
-import {
-  BsFillPersonFill,
-  BsFillEnvelopeAtFill,
-  BsFillKeyFill,
-  BsEyeFill,
-  BsEyeSlashFill,
-} from "react-icons/bs";
-
-import classes from "./Create.module.css";
-import Spinner from "../UI/Spinner";
-import { authActions } from "../../store/auth-slice";
-import { createAccount } from "../../api/api";
-import { alertActions } from "../../store/alert-slice";
+import classes from './Create.module.css';
+import Spinner from '../UI/Spinner';
+import { authActions } from '../../store/auth-slice';
+import { createAccount } from '../../api/api';
+import { alertActions } from '../../store/alert-slice';
 
 const Create = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [passwordType, setPasswordType] = useState("password");
-  const [confirmPasswordType, setconfirmPasswordType] = useState("password");
+  const [passwordType, setPasswordType] = useState('password');
+  const [confirmPasswordType, setconfirmPasswordType] = useState('password');
   const [showSpinner, setShowSpinner] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const setCookie = useCookies(["jwt"])[1];
+  const setCookie = useCookies(['jwt'])[1];
+  const animation = useSpring({
+    marginTop: 0,
+    opacity: 1,
+    from: { marginTop: -50, opacity: 0 },
+    config: { tension: 1000, friction: 10, duration: 1000 },
+  });
   const {
     value: firstNameInput,
     enteredValueIsValid: firstNameInputIsValid,
@@ -35,7 +35,7 @@ const Create = () => {
     valueInputChangedHandler: firstNameInputChangedHandler,
     valueInputBlurHandler: firstNameInputBlurHandler,
     reset: firstNameInputReset,
-  } = useInput((value) => value.trim() !== "");
+  } = useInput((value) => value.trim() !== '');
 
   const {
     value: lastNameInput,
@@ -44,7 +44,7 @@ const Create = () => {
     valueInputChangedHandler: lastNameInputChangedHandler,
     valueInputBlurHandler: lastNameInputBlurHandler,
     reset: lastNameInputReset,
-  } = useInput((value) => value.trim() !== "");
+  } = useInput((value) => value.trim() !== '');
 
   const {
     value: emailInput,
@@ -53,7 +53,7 @@ const Create = () => {
     valueInputChangedHandler: emailInputChangedHandler,
     valueInputBlurHandler: emailInputBlurHandler,
     reset: emailInputReset,
-  } = useInput((value) => value.trim().includes("@"));
+  } = useInput((value) => value.trim().includes('@'));
 
   const {
     value: passwordInput,
@@ -62,7 +62,7 @@ const Create = () => {
     valueInputChangedHandler: passwordInputChangedHandler,
     valueInputBlurHandler: passwordInputBlurHandler,
     reset: passwordInputReset,
-  } = useInput((value) => value.trim() !== "");
+  } = useInput((value) => value.trim() !== '');
   const {
     value: confirmPasswordInput,
     enteredValueIsValid: confirmPasswordInputIsValid,
@@ -70,7 +70,7 @@ const Create = () => {
     valueInputChangedHandler: confirmPasswordInputChangedHandler,
     valueInputBlurHandler: confirmPasswordInputBlurHandler,
     reset: confirmPasswordInputReset,
-  } = useInput((value) => value.trim() !== "");
+  } = useInput((value) => value.trim() !== '');
 
   let formIsValid = false;
 
@@ -102,28 +102,28 @@ const Create = () => {
 
   const passwordActionSee = () => {
     switchEyeIcon();
-    switchType("text");
+    switchType('text');
   };
 
   const passwordActionSee2 = () => {
     switchEyeIcon2();
-    switchType2("text");
+    switchType2('text');
   };
   const passwordActionBlind = () => {
     switchEyeIcon();
-    switchType("password");
+    switchType('password');
   };
 
   const passwordActionBlind2 = () => {
     switchEyeIcon2();
-    switchType2("password");
+    switchType2('password');
   };
 
   const submitHandler = async (e) => {
     e.preventDefault();
     setShowSpinner(true);
     const data = {
-      name: firstNameInput + " " + lastNameInput,
+      name: firstNameInput + ' ' + lastNameInput,
       email: emailInput,
       password: passwordInput,
       passwordConfirm: confirmPasswordInput,
@@ -131,17 +131,13 @@ const Create = () => {
 
     const res = await createAccount(data);
 
-    if (res.status === "success") {
+    if (res.status === 'success') {
       dispatch(authActions.login({ user: res.data.user }));
-      setCookie("jwt", res.token);
-      dispatch(
-        alertActions.setState({ message: res.message, status: res.status })
-      );
-      navigate("/", { replace: true });
+      setCookie('jwt', res.token);
+      dispatch(alertActions.setState({ message: res.message, status: res.status }));
+      navigate('/', { replace: true });
     } else {
-      dispatch(
-        alertActions.setState({ message: res.message, status: "error" })
-      );
+      dispatch(alertActions.setState({ message: res.message, status: 'error' }));
     }
 
     setShowSpinner(false);
@@ -150,23 +146,18 @@ const Create = () => {
     emailInputReset();
     passwordInputReset();
     confirmPasswordInputReset();
+    setTimeout(() => {
+      dispatch(alertActions.resetState());
+    }, 2000);
   };
 
-  const firstNameInputClasses = firstNameInputIsInvalid
-    ? `${classes.group} ${classes.invalid}`
-    : classes.group;
+  const firstNameInputClasses = firstNameInputIsInvalid ? `${classes.group} ${classes.invalid}` : classes.group;
 
-  const lastNameInputClasses = lastNameInputIsInvalid
-    ? `${classes.group} ${classes.invalid}`
-    : classes.group;
+  const lastNameInputClasses = lastNameInputIsInvalid ? `${classes.group} ${classes.invalid}` : classes.group;
 
-  const emailInputClasses = emailInputIsInvalid
-    ? `${classes.group} ${classes.invalid}`
-    : classes.group;
+  const emailInputClasses = emailInputIsInvalid ? `${classes.group} ${classes.invalid}` : classes.group;
 
-  const passwordInputClasses = passwordInputIsInvalid
-    ? `${classes.group} ${classes.invalid}`
-    : classes.group;
+  const passwordInputClasses = passwordInputIsInvalid ? `${classes.group} ${classes.invalid}` : classes.group;
 
   const confirmPasswordInputClasses = confirmPasswordInputIsInvalid
     ? `${classes.group} ${classes.invalid}`
@@ -182,102 +173,88 @@ const Create = () => {
         />
         <link rel="canonical" href="/create-account" />
       </Helmet>
-      <form className={classes.form} onSubmit={submitHandler}>
-        {showSpinner && <Spinner />}
-        <div className={firstNameInputClasses}>
-          <label>First name</label>
-          <div className={classes["input-group"]}>
-            <BsFillPersonFill className={classes.icon} />
-            <input
-              type="text"
-              value={firstNameInput}
-              onChange={firstNameInputChangedHandler}
-              onBlur={firstNameInputBlurHandler}
-            />
-          </div>
-        </div>
-        <div className={lastNameInputClasses}>
-          <label>Last name</label>
-          <div className={classes["input-group"]}>
-            <BsFillPersonFill className={classes.icon} />
-            <input
-              type="text"
-              value={lastNameInput}
-              onChange={lastNameInputChangedHandler}
-              onBlur={lastNameInputBlurHandler}
-            />
-          </div>
-        </div>
-        <div className={emailInputClasses}>
-          <label>Email address</label>
-          <div className={classes["input-group"]}>
-            <BsFillEnvelopeAtFill className={classes.icon} />
-            <input
-              type="email"
-              value={emailInput}
-              onChange={emailInputChangedHandler}
-              onBlur={emailInputBlurHandler}
-            />
-          </div>
-        </div>
-        <div className={passwordInputClasses}>
-          <label>Password</label>
-          <div className={classes["input-group"]}>
-            <BsFillKeyFill className={classes.icon} />
-            <input
-              type={passwordType}
-              value={passwordInput}
-              onChange={passwordInputChangedHandler}
-              onBlur={passwordInputBlurHandler}
-            />
-            {!showPassword && (
-              <BsEyeFill
-                className={classes.icon}
-                onClick={passwordActionSee}
-                style={{ cursor: "pointer" }}
+      <animated.div style={animation}>
+        <form className={classes.form} onSubmit={submitHandler}>
+          {showSpinner && <Spinner />}
+          <div className={firstNameInputClasses}>
+            <label>First name</label>
+            <div className={classes['input-group']}>
+              <BsFillPersonFill className={classes.icon} />
+              <input
+                type="text"
+                value={firstNameInput}
+                onChange={firstNameInputChangedHandler}
+                onBlur={firstNameInputBlurHandler}
               />
-            )}
-            {showPassword && (
-              <BsEyeSlashFill
-                className={classes.icon}
-                onClick={passwordActionBlind}
-                style={{ cursor: "pointer" }}
-              />
-            )}
+            </div>
           </div>
-        </div>
-        <div className={confirmPasswordInputClasses}>
-          <label>Confirm password</label>
-          <div className={classes["input-group"]}>
-            <BsFillKeyFill className={classes.icon} />
-            <input
-              type={confirmPasswordType}
-              value={confirmPasswordInput}
-              onChange={confirmPasswordInputChangedHandler}
-              onBlur={confirmPasswordInputBlurHandler}
-            />
-            {!showConfirmPassword && (
-              <BsEyeFill
-                className={classes.icon}
-                onClick={passwordActionSee2}
-                style={{ cursor: "pointer" }}
+          <div className={lastNameInputClasses}>
+            <label>Last name</label>
+            <div className={classes['input-group']}>
+              <BsFillPersonFill className={classes.icon} />
+              <input
+                type="text"
+                value={lastNameInput}
+                onChange={lastNameInputChangedHandler}
+                onBlur={lastNameInputBlurHandler}
               />
-            )}
-            {showConfirmPassword && (
-              <BsEyeSlashFill
-                className={classes.icon}
-                onClick={passwordActionBlind2}
-                style={{ cursor: "pointer" }}
-              />
-            )}
+            </div>
           </div>
-        </div>
-        <div className={classes.action}>
-          <button type="submit" disabled={!formIsValid}>
-            Create account
-          </button>
-        </div>
-      </form>
+          <div className={emailInputClasses}>
+            <label>Email address</label>
+            <div className={classes['input-group']}>
+              <BsFillEnvelopeAtFill className={classes.icon} />
+              <input
+                type="email"
+                value={emailInput}
+                onChange={emailInputChangedHandler}
+                onBlur={emailInputBlurHandler}
+              />
+            </div>
+          </div>
+          <div className={passwordInputClasses}>
+            <label>Password</label>
+            <div className={classes['input-group']}>
+              <BsFillKeyFill className={classes.icon} />
+              <input
+                type={passwordType}
+                value={passwordInput}
+                onChange={passwordInputChangedHandler}
+                onBlur={passwordInputBlurHandler}
+              />
+              {!showPassword && (
+                <BsEyeFill className={classes.icon} onClick={passwordActionSee} style={{ cursor: 'pointer' }} />
+              )}
+              {showPassword && (
+                <BsEyeSlashFill className={classes.icon} onClick={passwordActionBlind} style={{ cursor: 'pointer' }} />
+              )}
+            </div>
+          </div>
+          <div className={confirmPasswordInputClasses}>
+            <label>Confirm password</label>
+            <div className={classes['input-group']}>
+              <BsFillKeyFill className={classes.icon} />
+              <input
+                type={confirmPasswordType}
+                value={confirmPasswordInput}
+                onChange={confirmPasswordInputChangedHandler}
+                onBlur={confirmPasswordInputBlurHandler}
+              />
+              {!showConfirmPassword && (
+                <BsEyeFill className={classes.icon} onClick={passwordActionSee2} style={{ cursor: 'pointer' }} />
+              )}
+              {showConfirmPassword && (
+                <BsEyeSlashFill className={classes.icon} onClick={passwordActionBlind2} style={{ cursor: 'pointer' }} />
+              )}
+            </div>
+          </div>
+          <div className={classes.action}>
+            <button type="submit" disabled={!formIsValid}>
+              Create account
+            </button>
+          </div>
+        </form>
+      </animated.div>
     </Fragment>
   );
 };

@@ -1,26 +1,33 @@
-import { useState } from "react";
-import { useDispatch } from "react-redux";
-import useInput from "../../hooks/userInput";
-import { useCookies } from "react-cookie";
-import { useNavigate } from "react-router-dom";
-import { useParams } from "react-router-dom";
-import { BsKeyFill, BsEyeFill, BsEyeSlashFill } from "react-icons/bs";
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import useInput from '../../hooks/userInput';
+import { useCookies } from 'react-cookie';
+import { useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+import { BsKeyFill, BsEyeFill, BsEyeSlashFill } from 'react-icons/bs';
+import { useSpring, animated } from 'react-spring';
 
-import classes from "./ForgotPassword.module.css";
-import { alertActions } from "../../store/alert-slice";
-import Spinner from "../UI/Spinner";
-import { resetPassword } from "../../api/api";
+import classes from './ForgotPassword.module.css';
+import { alertActions } from '../../store/alert-slice';
+import Spinner from '../UI/Spinner';
+import { resetPassword } from '../../api/api';
 
 const ResetPassword = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [passwordType, setPasswordType] = useState("password");
-  const [confirmPasswordType, setconfirmPasswordType] = useState("password");
+  const [passwordType, setPasswordType] = useState('password');
+  const [confirmPasswordType, setconfirmPasswordType] = useState('password');
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const setCookie = useCookies(["jwt"])[1];
+  const setCookie = useCookies(['jwt'])[1];
   const [showSpinner, setShowSpinner] = useState(false);
   const params = useParams();
+  const animation = useSpring({
+    marginTop: 0,
+    opacity: 1,
+    from: { marginTop: -50, opacity: 0 },
+    config: { tension: 1000, friction: 10, duration: 1000 },
+  });
 
   const {
     value: passwordInput,
@@ -29,7 +36,7 @@ const ResetPassword = () => {
     valueInputChangedHandler: passwordInputChangedHandler,
     valueInputBlurHandler: passwordInputBlurHandler,
     reset: passwordInputReset,
-  } = useInput((value) => value.trim() !== "");
+  } = useInput((value) => value.trim() !== '');
   const {
     value: confirmPasswordInput,
     enteredValueIsValid: confirmPasswordInputIsValid,
@@ -37,7 +44,7 @@ const ResetPassword = () => {
     valueInputChangedHandler: confirmPasswordInputChangedHandler,
     valueInputBlurHandler: confirmPasswordInputBlurHandler,
     reset: confirmPasswordInputReset,
-  } = useInput((value) => value.trim() !== "");
+  } = useInput((value) => value.trim() !== '');
 
   let formIsValid = false;
   if (passwordInputIsValid && confirmPasswordInputIsValid) {
@@ -62,21 +69,21 @@ const ResetPassword = () => {
 
   const passwordActionSee = () => {
     switchEyeIcon();
-    switchType("text");
+    switchType('text');
   };
 
   const passwordActionSee2 = () => {
     switchEyeIcon2();
-    switchType2("text");
+    switchType2('text');
   };
   const passwordActionBlind = () => {
     switchEyeIcon();
-    switchType("password");
+    switchType('password');
   };
 
   const passwordActionBlind2 = () => {
     switchEyeIcon2();
-    switchType2("password");
+    switchType2('password');
   };
 
   const submitHandler = async (e) => {
@@ -90,94 +97,77 @@ const ResetPassword = () => {
 
     const res = await resetPassword(data, params.token);
 
-    if (res.status === "success") {
-      setCookie("jwt", res.token);
-      dispatch(
-        alertActions.setState({ message: res.message, status: res.status })
-      );
-      navigate("/", { replace: true });
+    if (res.status === 'success') {
+      setCookie('jwt', res.token);
+      dispatch(alertActions.setState({ message: res.message, status: res.status }));
+      navigate('/', { replace: true });
     } else {
-      dispatch(
-        alertActions.setState({ message: res.message, status: "error" })
-      );
+      dispatch(alertActions.setState({ message: res.message, status: 'error' }));
     }
 
     setShowSpinner(false);
 
     passwordInputReset();
     confirmPasswordInputReset();
+    setTimeout(() => {
+      dispatch(alertActions.resetState());
+    }, 2000);
   };
 
-  const passwordInputClasses = passwordInputIsInvalid
-    ? `${classes.group} ${classes.invalid}`
-    : classes.group;
+  const passwordInputClasses = passwordInputIsInvalid ? `${classes.group} ${classes.invalid}` : classes.group;
 
   const confirmPasswordInputClasses = confirmPasswordInputIsInvalid
     ? `${classes.group} ${classes.invalid}`
     : classes.group;
 
   return (
-    <form className={classes.form} onSubmit={submitHandler}>
-      {showSpinner && <Spinner />}
-      <h2>Enter your new password and click proceed.</h2>
-      <div className={passwordInputClasses}>
-        <label>New password</label>
-        <div className={classes["input-group"]}>
-          <BsKeyFill className={classes.icon} />
-          <input
-            type={passwordType}
-            value={passwordInput}
-            onChange={passwordInputChangedHandler}
-            onBlur={passwordInputBlurHandler}
-          />
-          {!showPassword && (
-            <BsEyeFill
-              className={classes.icon}
-              onClick={passwordActionSee}
-              style={{ cursor: "pointer" }}
+    <animated.div style={animation}>
+      <form className={classes.form} onSubmit={submitHandler}>
+        {showSpinner && <Spinner />}
+        <h2>Enter your new password and click proceed.</h2>
+        <div className={passwordInputClasses}>
+          <label>New password</label>
+          <div className={classes['input-group']}>
+            <BsKeyFill className={classes.icon} />
+            <input
+              type={passwordType}
+              value={passwordInput}
+              onChange={passwordInputChangedHandler}
+              onBlur={passwordInputBlurHandler}
             />
-          )}
-          {showPassword && (
-            <BsEyeSlashFill
-              className={classes.icon}
-              onClick={passwordActionBlind}
-              style={{ cursor: "pointer" }}
-            />
-          )}
+            {!showPassword && (
+              <BsEyeFill className={classes.icon} onClick={passwordActionSee} style={{ cursor: 'pointer' }} />
+            )}
+            {showPassword && (
+              <BsEyeSlashFill className={classes.icon} onClick={passwordActionBlind} style={{ cursor: 'pointer' }} />
+            )}
+          </div>
         </div>
-      </div>
-      <div className={confirmPasswordInputClasses}>
-        <label>Confirm new password</label>
-        <div className={classes["input-group"]}>
-          <BsKeyFill className={classes.icon} />
-          <input
-            type={confirmPasswordType}
-            value={confirmPasswordInput}
-            onChange={confirmPasswordInputChangedHandler}
-            onBlur={confirmPasswordInputBlurHandler}
-          />
-          {!showConfirmPassword && (
-            <BsEyeFill
-              className={classes.icon}
-              onClick={passwordActionSee2}
-              style={{ cursor: "pointer" }}
+        <div className={confirmPasswordInputClasses}>
+          <label>Confirm new password</label>
+          <div className={classes['input-group']}>
+            <BsKeyFill className={classes.icon} />
+            <input
+              type={confirmPasswordType}
+              value={confirmPasswordInput}
+              onChange={confirmPasswordInputChangedHandler}
+              onBlur={confirmPasswordInputBlurHandler}
             />
-          )}
-          {showConfirmPassword && (
-            <BsEyeSlashFill
-              className={classes.icon}
-              onClick={passwordActionBlind2}
-              style={{ cursor: "pointer" }}
-            />
-          )}
+            {!showConfirmPassword && (
+              <BsEyeFill className={classes.icon} onClick={passwordActionSee2} style={{ cursor: 'pointer' }} />
+            )}
+            {showConfirmPassword && (
+              <BsEyeSlashFill className={classes.icon} onClick={passwordActionBlind2} style={{ cursor: 'pointer' }} />
+            )}
+          </div>
         </div>
-      </div>
-      <div className={classes.action}>
-        <button type="submit" disabled={!formIsValid}>
-          Proceed
-        </button>
-      </div>
-    </form>
+        <div className={classes.action}>
+          <button type="submit" disabled={!formIsValid}>
+            Proceed
+          </button>
+        </div>
+      </form>
+    </animated.div>
   );
 };
 

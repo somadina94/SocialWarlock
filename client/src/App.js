@@ -21,12 +21,8 @@ import ErrorModal from './components/UI/ErrorModal';
 import ForgotPassword from './components/auth/ForgotPassword';
 import ResetPassword from './components/auth/ResetPassword';
 import CarouselMobile from './components/UI/CarouselMobile';
-import Muser from './components/body/Muser';
-import Automation from './components/auto/Automation';
-import CreateFb from './components/auto/CreateFb';
 
 import { loader as orderDetailsLoader } from './components/dashboard/OrderDetails';
-import { loader as messagesLoaderForCreate } from './components/auto/CreateFb';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -38,16 +34,12 @@ const router = createBrowserRouter(
       <Route path="/contact-us" element={<ContactUs />} />
       <Route path="/forgotPassword" element={<ForgotPassword />} />
       <Route path="/resetPassword/:token" element={<ResetPassword />} />
-      <Route path="/downloads" element={<Muser />} />
       <Route path="/dashboard" element={<Dashboard />}>
         <Route index element={<UserDetails />} />
         <Route path="/dashboard/account-info" element={<UserDetails />} />
         <Route path="/dashboard/orders" element={<Orders />} />
         <Route path="orders/:id" element={<OrderDetails />} loader={orderDetailsLoader} />
         <Route path="updatePassword" element={<Password />} />
-      </Route>
-      <Route path="automation" element={<Automation />}>
-        <Route path="create-fb-account" element={<CreateFb />} loader={messagesLoaderForCreate} />
       </Route>
       <Route path="*" element={<Navigate to="/" />} />
     </Route>

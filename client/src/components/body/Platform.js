@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { AiFillFacebook, AiFillInstagram, AiFillLinkedin } from 'react-icons/ai';
 import { BsFillCartPlusFill, BsForwardFill } from 'react-icons/bs';
+import { useSpring, animated } from 'react-spring';
 
 import classes from './Platform.module.css';
 import { getOnePlatform } from '../../api/api';
@@ -12,6 +13,12 @@ const Platform = (props) => {
   const [status, setStatus] = useState(false);
   const dispatch = useDispatch();
   const { name, id, price } = props;
+  const animation = useSpring({
+    marginTop: 0,
+    opacity: 1,
+    from: { marginTop: -50, opacity: 0 },
+    config: { tension: 1000, friction: 10, duration: 1000 },
+  });
 
   useEffect(() => {
     const request = async () => {
@@ -39,32 +46,34 @@ const Platform = (props) => {
   const displayStatus = status ? 'In-stock' : 'Out of stock';
 
   return (
-    <div className={classes.platform}>
-      <div className={classes['logo-container']}>
-        <Icon className={classes.icon} />
+    <animated.div style={animation}>
+      <div className={classes.platform}>
+        <div className={classes['logo-container']}>
+          <Icon className={classes.icon} />
+        </div>
+        <div className={classes.name}>
+          <span>{name}</span>
+        </div>
+        <div className={classes.details}>
+          <span>Price</span>
+          <BsForwardFill className={classes.arrow} />
+          <span>${price}</span>
+        </div>
+        <div className={classes.details}>
+          <span>status</span>
+          <BsForwardFill className={classes.arrow} />
+          <span className={`${status ? classes.available : classes.unavailable}`}>{displayStatus}</span>
+        </div>
+        <div className={classes['cart-action']}>
+          <button onClick={addProdToCartHandler} disabled={!status}>
+            {' '}
+            <p>Add to Cart</p>
+            <BsFillCartPlusFill className={classes.add} />
+          </button>
+        </div>
+        <p className={classes.note}>NB: No refund after successful login</p>
       </div>
-      <div className={classes.name}>
-        <span>{name}</span>
-      </div>
-      <div className={classes.details}>
-        <span>Price</span>
-        <BsForwardFill className={classes.arrow} />
-        <span>${price}</span>
-      </div>
-      <div className={classes.details}>
-        <span>status</span>
-        <BsForwardFill className={classes.arrow} />
-        <span className={`${status ? classes.available : classes.unavailable}`}>{displayStatus}</span>
-      </div>
-      <div className={classes['cart-action']}>
-        <button onClick={addProdToCartHandler} disabled={!status}>
-          {' '}
-          <p>Add to Cart</p>
-          <BsFillCartPlusFill className={classes.add} />
-        </button>
-      </div>
-      <p className={classes.note}>NB: No refund after successful login</p>
-    </div>
+    </animated.div>
   );
 };
 
