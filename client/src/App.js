@@ -22,8 +22,11 @@ import ForgotPassword from './components/auth/ForgotPassword';
 import ResetPassword from './components/auth/ResetPassword';
 import CarouselMobile from './components/UI/CarouselMobile';
 import Muser from './components/body/Muser';
+import Automation from './components/auto/Automation';
+import CreateFb from './components/auto/CreateFb';
 
 import { loader as orderDetailsLoader } from './components/dashboard/OrderDetails';
+import { loader as messagesLoaderForCreate } from './components/auto/CreateFb';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -42,6 +45,9 @@ const router = createBrowserRouter(
         <Route path="/dashboard/orders" element={<Orders />} />
         <Route path="orders/:id" element={<OrderDetails />} loader={orderDetailsLoader} />
         <Route path="updatePassword" element={<Password />} />
+      </Route>
+      <Route path="automation" element={<Automation />}>
+        <Route path="create-fb-account" element={<CreateFb />} loader={messagesLoaderForCreate} />
       </Route>
       <Route path="*" element={<Navigate to="/" />} />
     </Route>

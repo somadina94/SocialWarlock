@@ -50,9 +50,12 @@ exports.signUp = catchAsync(async (req, res, next) => {
     name: 'Admin Social Warlock',
   };
 
-  await new Email(newUser).sendWelcome();
-
-  await new Email(adminEmail).sendNewMember();
+  try {
+    await new Email(adminEmail).sendNewMember();
+    await new Email(newUser).sendWelcome();
+  } catch (err) {
+    console.log(err);
+  }
 
   const message = 'Signed up successfully.';
 
@@ -139,7 +142,9 @@ exports.protect = catchAsync(async (req, res, next) => {
 
   // 4) Check if user recently changed password.
   if (currentUser.changedPasswordAfterJWT(decodedJWT.iat)) {
-    return next(new AppError('You recently changed password, please login again to be granted access.'));
+    return next(
+      new AppError('You recently changed password, please login again to be granted access.')
+    );
   }
 
   // All being set, grant access to protected route.

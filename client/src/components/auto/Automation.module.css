@@ -1,0 +1,21 @@
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 2px solid black;
+  margin-bottom: 2rem;
+}
+
+.nav a {
+  font-size: 2rem;
+  text-decoration: none;
+  padding: 2rem;
+  color: #fff;
+  font-weight: 800;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: inline-block;
+}
+
+.auto {
+  padding: 2rem;
+}

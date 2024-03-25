@@ -198,3 +198,28 @@ export const uploadAndSort = async (data) => {
     return err.response.data;
   }
 };
+
+export const createFbAccount = async (data) => {
+  try {
+    const res = await axiosInstance({
+      method: 'POST',
+      url: `facebook/create-fb-account`,
+      data,
+    });
+    return res.data;
+  } catch (err) {
+    return err.response.data;
+  }
+};
+
+export const getFbMessages = async () => {
+  try {
+    const res = await axiosInstance({
+      method: 'GET',
+      url: `facebook/get-messages`,
+    });
+    return res.data;
+  } catch (err) {
+    return err.response.data;
+  }
+};

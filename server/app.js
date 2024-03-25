@@ -7,10 +7,6 @@ const userRouter = require('./routes/userRoutes');
 const orderRouter = require('./routes/orderRoutes');
 const platformRouter = require('./routes/platformRoutes');
 const paymentRouter = require('./routes/paymentRoutes');
-const mUserRouter = require('./routes/mUserRoutes');
-const sessionRouter = require('./routes/sessionRoutes');
-const facebookRouter = require('./routes/facebookRoutes');
-const downloadRouter = require('./routes/downloadRoutes');
 const helmet = require('helmet');
 const compression = require('compression');
 const mongoSanitize = require('express-mongo-sanitize');
@@ -32,7 +28,7 @@ app.use(cors(corsOptions));
 app.use(helmet());
 
 const limiter = rateLimit({
-  max: 50,
+  max: 1000,
   windowMs: 60 * 60 * 1000,
   message: 'Too many requests from this ip address, try again in 1hour.',
 });
@@ -64,10 +60,6 @@ app.use('/api/v1/users', userRouter);
 app.use('/api/v1/orders', orderRouter);
 app.use('/api/v1/platform', platformRouter);
 app.use('/api/v1/payment', paymentRouter);
-app.use('/api/v1/messenger', mUserRouter);
-app.use('/api/v1/instagram', sessionRouter);
-app.use('/api/v1/facebook', facebookRouter);
-app.use('/api/v1/download', downloadRouter);
 
 app.all('*', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
