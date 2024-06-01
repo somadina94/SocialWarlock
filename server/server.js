@@ -16,8 +16,12 @@ const server = app.listen(port, () => {
 });
 
 const connectDB = async () => {
-  const database = await mongoose.connect(DB);
-  if (database.STATES.connected === 1) console.log('DB connected successfully!!!');
+  try {
+    const database = await mongoose.connect(DB);
+    if (database.STATES.connected === 1) console.log('DB connected successfully!!!');
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 connectDB();

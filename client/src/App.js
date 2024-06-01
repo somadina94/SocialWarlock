@@ -1,4 +1,4 @@
-import { Fragment, useRef } from 'react';
+import { Fragment } from 'react';
 import { useSelector } from 'react-redux';
 import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider, Navigate } from 'react-router-dom';
 import { Transition } from 'react-transition-group';
@@ -49,7 +49,6 @@ const router = createBrowserRouter(
 function App() {
   const showModal = useSelector((state) => state.alert.showModal);
   const cartVisibility = useSelector((state) => state.cart.cartVisibility);
-  const tawkMessengerRef = useRef();
 
   return (
     <Fragment>
@@ -59,7 +58,7 @@ function App() {
       </Transition>
       <Carousels />
       <CarouselMobile />
-      <TawkMessengerReact propertyId="64704413ad80445890ef3152" widgetId="default" ref={tawkMessengerRef} />
+      <TawkMessengerReact propertyId="643012464247f20fefea5d26" widgetId="1gtdseqgd" />
       <RouterProvider router={router} />
     </Fragment>
   );
