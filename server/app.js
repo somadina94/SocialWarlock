@@ -17,12 +17,6 @@ const paymentController = require('./controllers/paymentController');
 
 const app = express();
 
-app.use(
-  '/webhook-checkout',
-  express.raw({ type: 'application/json' }),
-  paymentController.webhookResponse
-);
-
 const corsOptions = {
   origin: '*',
   credentials: true,
@@ -32,6 +26,11 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 app.use(helmet());
+app.use(
+  '/webhook-checkout',
+  express.raw({ type: 'application/json' }),
+  paymentController.webhookResponse
+);
 
 const limiter = rateLimit({
   max: 1000,
