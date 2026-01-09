@@ -43,31 +43,34 @@ exports.checkout = catchAsync(async (req, res, next) => {
 
   await checkPrice();
 
-  console.log(totalPrice);
+  try {
+    const charge = await resources.Charge.create({
+      name: 'Order checkout',
+      description: 'Social account purchase Charge',
+      local_price: {
+        amount: String(totalPrice), // IMPORTANT
+        currency: 'USD',
+      },
+      pricing_type: 'fixed_price',
+      metadata: {
+        totalPrice,
+        totalQuantity,
+        cart,
+        user: String(req.user._id),
+      },
+    });
 
-  const charge = await resources.Charge.create({
-    name: 'Order checkout',
-    description: 'Social account purchase Charge',
-    local_price: {
-      amount: totalPrice,
-      currency: 'USD',
-    },
-    pricing_type: 'fixed_price',
-    metadata: {
-      totalPrice,
-      totalQuantity,
-      cart,
-      user: req.user._id,
-    },
-  });
-
-  console.log(charge);
-
-  if (!charge) {
-    return next(
-      new AppError('There was an error creating the charge. Please try again later.', 500)
-    );
+    console.log('CHARGE:', charge);
+  } catch (err) {
+    console.error('COINBASE ERROR');
+    console.error(err?.response?.data || err);
   }
+
+  // if (!charge) {
+  //   return next(
+  //     new AppError('There was an error creating the charge. Please try again later.', 500)
+  //   );
+  // }
 
   res.status(200).json({
     status: 'success',
