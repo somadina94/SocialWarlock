@@ -43,8 +43,10 @@ exports.checkout = catchAsync(async (req, res, next) => {
 
   await checkPrice();
 
+  let charge;
+
   try {
-    const charge = await resources.Charge.create({
+    charge = await resources.Charge.create({
       name: 'Order checkout',
       description: 'Social account purchase Charge',
       local_price: {
@@ -66,11 +68,11 @@ exports.checkout = catchAsync(async (req, res, next) => {
     console.error(err?.response?.data || err);
   }
 
-  // if (!charge) {
-  //   return next(
-  //     new AppError('There was an error creating the charge. Please try again later.', 500)
-  //   );
-  // }
+  if (!charge) {
+    return next(
+      new AppError('There was an error creating the charge. Please try again later.', 500)
+    );
+  }
 
   res.status(200).json({
     status: 'success',
