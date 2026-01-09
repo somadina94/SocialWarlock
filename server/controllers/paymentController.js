@@ -63,6 +63,12 @@ exports.checkout = catchAsync(async (req, res, next) => {
 
   console.log(charge);
 
+  if (!charge) {
+    return next(
+      new AppError('There was an error creating the charge. Please try again later.', 500)
+    );
+  }
+
   res.status(200).json({
     status: 'success',
     data: {
