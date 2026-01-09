@@ -2,7 +2,6 @@ import { Fragment } from 'react';
 import { useSelector } from 'react-redux';
 import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider, Navigate } from 'react-router-dom';
 import { Transition } from 'react-transition-group';
-import TawkMessengerReact from '@tawk.to/tawk-messenger-react';
 
 import UserLayout from './components/pages/UserLayout';
 import AlertModal from './components/UI/AlertModal';
@@ -58,7 +57,6 @@ function App() {
       </Transition>
       <Carousels />
       <CarouselMobile />
-      <TawkMessengerReact propertyId="643012464247f20fefea5d26" widgetId="1gtdseqgd" />
       <RouterProvider router={router} />
     </Fragment>
   );

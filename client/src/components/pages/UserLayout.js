@@ -14,7 +14,7 @@ const UserLayout = () => {
       <main>
         <Outlet />
       </main>
-      <ReactWhatsapp number="+447300901462" className={classes.whatsapp}>
+      <ReactWhatsapp number="+2349136858289" className={classes.whatsapp}>
         <AiOutlineWhatsApp className={classes['whatsapp-icon']} />
       </ReactWhatsapp>
       <Footer />
