@@ -1,12 +1,12 @@
 import axios from 'axios';
 
-// const axiosInstance = axios.create({
-//   baseURL: 'http://127.0.0.1:5002/api/v1/',
-// });
-
 const axiosInstance = axios.create({
-  baseURL: 'https://api.socialwarlock.com/api/v1/',
+  baseURL: 'http://127.0.0.1:5002/api/v1/',
 });
+
+// const axiosInstance = axios.create({
+//   baseURL: 'https://api.socialwarlock.com/api/v1/',
+// });
 
 export const createAccount = async (data) => {
   try {
@@ -22,6 +22,7 @@ export const createAccount = async (data) => {
 };
 
 export const logIn = async (data) => {
+  console.log('API login data:', data);
   try {
     const res = await axiosInstance({
       method: 'POST',

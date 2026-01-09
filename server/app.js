@@ -54,7 +54,6 @@ app.use(xss());
 app.use(hpp());
 
 app.use(compression());
-
 app.use('/api/v1/products', productRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/orders', orderRouter);
