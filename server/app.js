@@ -17,13 +17,7 @@ const paymentController = require('./controllers/paymentController');
 
 const app = express();
 
-const corsOptions = {
-  origin: '*',
-  credentials: true,
-  optionSuccessStatus: 200,
-};
-
-app.use(cors(corsOptions));
+app.use(cors());
 
 app.use(helmet());
 app.use(
@@ -39,13 +33,7 @@ const limiter = rateLimit({
 });
 app.use('/api', limiter);
 
-app.use(
-  express.json({
-    verify: (req, res, buf) => {
-      req.rawBody = buf;
-    },
-  })
-);
+app.use(express.json());
 
 // Data sanitization against NOSQL query injection
 app.use(mongoSanitize());
