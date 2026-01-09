@@ -46,6 +46,7 @@ const CartModal = () => {
       cart,
     };
     const res = await createCheckout(jwt, data);
+    console.log(res);
 
     if (res.status === 'success') {
       const url = res.data.charge.hosted_url;
@@ -56,6 +57,7 @@ const CartModal = () => {
 
     dispatch(cartActions.clearCart());
     dispatch(cartActions.hideCart());
+    setShowSpinner(false);
   };
 
   const cartClasses = cartVisibility ? `${classes.cart} ${styles.add}` : `${classes.cart} ${styles.remove}`;

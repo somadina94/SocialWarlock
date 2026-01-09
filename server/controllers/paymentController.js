@@ -43,6 +43,8 @@ exports.checkout = catchAsync(async (req, res, next) => {
 
   await checkPrice();
 
+  console.log(totalPrice);
+
   const charge = await resources.Charge.create({
     name: 'Order checkout',
     description: 'Social account purchase Charge',
@@ -58,6 +60,8 @@ exports.checkout = catchAsync(async (req, res, next) => {
       user: req.user._id,
     },
   });
+
+  console.log(charge);
 
   res.status(200).json({
     status: 'success',
