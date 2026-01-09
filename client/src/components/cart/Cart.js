@@ -49,7 +49,7 @@ const CartModal = () => {
     console.log(res);
 
     if (res.status === 'success') {
-      const url = res.data.charge.hosted_url;
+      const url = res.data.charge.url;
       window.location.href = url;
     } else {
       dispatch(alertActions.setState({ message: res.message, status: 'error' }));

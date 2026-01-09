@@ -4,13 +4,7 @@ const AppError = require('../util/appError');
 const Platfrom = require('../models/platformModel');
 const catchAsync = require('../util/catchAsync');
 const Email = require('../util/email');
-const coinbase = require('coinbase-commerce-node');
-
-const Client = coinbase.Client;
-const clientObj = Client.init(process.env.COINBASE_API_KEY);
-clientObj.setRequestTimeout(10000);
-const resources = coinbase.resources;
-const webhook = coinbase.Webhook;
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 exports.checkout = catchAsync(async (req, res, next) => {
   const { cart, totalQuantity } = req.body;
@@ -35,34 +29,44 @@ exports.checkout = catchAsync(async (req, res, next) => {
         totalPrice += price;
         if (counter === platforms.length - 1) {
           resolve();
+        } else {
         }
         counter++;
       });
     });
   };
-
   await checkPrice();
 
   let charge;
 
   try {
-    charge = await resources.Charge.create({
-      name: 'Order checkout',
-      description: 'Social account purchase Charge',
-      local_price: {
-        amount: String(totalPrice), // IMPORTANT
-        currency: 'USD',
-      },
-      pricing_type: 'fixed_price',
+    charge = await stripe.checkout.sessions.create({
+      payment_method_types: ['card'],
+      success_url: `https://social.jahbyte.com`,
+      cancel_url: `https://social.jahbyte.com`,
+      customer_email: req.user.email,
+      mode: 'payment',
+      line_items: [
+        {
+          price_data: {
+            currency: 'usd',
+            product_data: {
+              name: 'Order checkout',
+            },
+            unit_amount: totalPrice * 100,
+          },
+          quantity: totalQuantity,
+        },
+      ],
       metadata: {
-        totalPrice,
-        totalQuantity,
-        cart,
-        user: String(req.user._id),
+        userId: String(req.user._id),
+        totalPrice: String(totalPrice),
+        totalQuantity: String(totalQuantity),
+        cart: JSON.stringify(cart), // MUST stringify objects
       },
     });
 
-    console.log('CHARGE:', charge);
+    // console.log('CHARGE:', charge);
   } catch (err) {
     console.error('COINBASE ERROR');
     console.error(err?.response?.data || err);
@@ -83,17 +87,20 @@ exports.checkout = catchAsync(async (req, res, next) => {
 });
 
 exports.webhookResponse = async (req, res, next) => {
-  const event = webhook.verifyEventBody(
-    req.rawBody,
-    req.headers['x-cc-webhook-signature'],
-    process.env.COINBASE_WEBHOOK_SECRET
-  );
+  const signature = req.headers['stripe-signature'];
+  let event;
+  try {
+    event = stripe.webhooks.constructEvent(req.body, signature, process.env.STRIPE_WEBHOOK_SECRET);
+  } catch (err) {
+    return res.status(400).send(`Webhook error: ${err.message}`);
+  }
 
-  if (event.type === 'charge:confirmed') {
-    const metaData = event.data.metadata;
+  if (event.type === 'checkout.session.completed') {
+    const session = event.data.metadata;
+    const metaData = event.data.object.metadata;
     const cart = JSON.parse(metaData.cart);
     const totalQuantity = metaData.totalQuantity;
-    const user = metaData.user;
+    const user = metaData.userId;
     const totalPrice = metaData.totalPrice;
 
     const platforms = cart.map((el) => {
@@ -105,6 +112,23 @@ exports.webhookResponse = async (req, res, next) => {
 
       return data;
     });
+
+    // if (event.type === 'charge:confirmed') {
+    //   const metaData = event.data.metadata;
+    //   const cart = JSON.parse(metaData.cart);
+    //   const totalQuantity = metaData.totalQuantity;
+    //   const user = metaData.user;
+    //   const totalPrice = metaData.totalPrice;
+
+    //   const platforms = cart.map((el) => {
+    //     const data = {
+    //       id: el.id,
+    //       quantity: el.quantity,
+    //       name: el.name,
+    //     };
+
+    //     return data;
+    //   });
 
     // let totalPrice = 0;
     // const checkPrice = () => {
@@ -163,7 +187,7 @@ exports.webhookResponse = async (req, res, next) => {
               });
             };
 
-            await deleteProduct();
+            // await deleteProduct();
 
             order.status = true;
             await order.save({ validateBeforeSave: false });

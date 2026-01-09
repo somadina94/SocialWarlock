@@ -17,6 +17,12 @@ const paymentController = require('./controllers/paymentController');
 
 const app = express();
 
+app.use(
+  '/webhook-checkout',
+  express.raw({ type: 'application/json' }),
+  paymentController.webhookResponse
+);
+
 const corsOptions = {
   origin: '*',
   credentials: true,
@@ -42,8 +48,6 @@ app.use(
   })
 );
 
-app.use('/webhook', express.raw({ type: 'application/json' }), paymentController.webhookResponse);
-
 // Data sanitization against NOSQL query injection
 app.use(mongoSanitize());
 
@@ -52,6 +56,12 @@ app.use(xss());
 
 // Prevent parameter pollution
 app.use(hpp());
+
+// app.post(
+//   '/webhook-checkout',
+//   express.raw({ type: 'application/json' }),
+//   paymentController.webhookResponse
+// );
 
 app.use(compression());
 app.use('/api/v1/products', productRouter);
